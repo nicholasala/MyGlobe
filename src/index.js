@@ -23,9 +23,12 @@ import {
 } from './constants';
 
 function createEarth() {
+    let isRotating = true;
+    
     //Scene
     const scene = new Scene();
-    const renderer = new WebGLRenderer({ canvas: document.getElementById(GLOBE_ELEMENT_ID) });
+    const globeElement = document.getElementById(GLOBE_ELEMENT_ID);
+    const renderer = new WebGLRenderer({ canvas: globeElement });
     const camera = new PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.4, 1000);
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.position.z = 1.7;
@@ -41,8 +44,10 @@ function createEarth() {
     scene.add(earth);
 
     //Light
-    addAmbientLight(scene, LIGHT_COLOR, AMBIENT_LIGHT_INTENSITY);
-    addPointLight(scene, LIGHT_COLOR, POINT_LIGHT_INTENSITY, 5, 0, 5);
+    scene.add(new AmbientLight(LIGHT_COLOR, AMBIENT_LIGHT_INTENSITY));
+    const pointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+    pointLight.position.set(5, 0, 5);
+    scene.add(pointLight);
 
     const render = () => {
         renderer.render(scene, camera);
@@ -54,21 +59,16 @@ function createEarth() {
 
     const animate = () => {
         render();
-        update();
+        if(isRotating) update();
         requestAnimationFrame(animate);
     }
 
+    //Mouse events
+    globeElement.addEventListener('mousedown', () => {
+        isRotating = false;
+    });
+
     requestAnimationFrame(animate);
-}
-
-function addAmbientLight(scene, color, intensity) {
-    scene.add(new AmbientLight(color, intensity));
-}
-
-function addPointLight(scene, color, intensity, x, y, z) {
-    const pointLight = new PointLight(color, intensity);
-    pointLight.position.set(x, y, z);
-    scene.add(pointLight);
 }
 
 window.onload = createEarth;
