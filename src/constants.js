@@ -1,8 +1,12 @@
 export const GLOBE_ELEMENT_ID = 'globe';
-export const SCENE_BACKGROUND_COLOR = 0x000b4c;
+export const SCENE_BACKGROUND_COLOR = 0x040223;
 export const MESH_COLOR = 0xffffff;
 export const TEXTURE_ADDRESS = '/texture/earthmap.jpeg';
 export const LIGHT_COLOR = 0xffffff;
-export const AMBIENT_LIGHT_INTENSITY = 2;
+export const AMBIENT_LIGHT_INTENSITY = 1.4;
 export const POINT_LIGHT_INTENSITY = 160;
-export const EARTH_ROTATION_ANGLE_RADIANS = 0.1 * Math.PI/180;
+export const EARTH_ROTATION_ANGLE_RADIANS = 0.16 * Math.PI/180;
+export const X_AXIS_SHIFT_LIMIT = 7;
+export const X_AXIS_FIRST_THRESHOLD = 2.8;
+export const X_AXIS_SECOND_THRESHOLD = 5;
+export const Y_AXIS_SHIFT_LIMIT = 1.8;
