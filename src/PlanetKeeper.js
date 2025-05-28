@@ -104,16 +104,27 @@ export class PlanetKeeper {
         requestAnimationFrame(animate);
     }
 
-    addImageOnPlanet(url, lat, lon) {
-        const material = new MeshLambertMaterial({map: new TextureLoader().load(url)});
+    /**
+    * Add a list of images on the planet
+    * @param {ImageDTO[]} images - image object
+    */
+    addImagesOnPlanet(images) {
+        images.forEach(image => {
+            this.addImageOnPlanet(image);
+        });
+    }
 
-        //TODO capire come rispettare le proporzioni di ogni dipinto
-        const geometry = new PlaneGeometry(0.15 * 0.65, 0.15);
-
-        const image = new Mesh(geometry, material);
-
-        this.#placeObjectOnPlanet(image, lat, lon, this.#planetRadius);
-        this.#planet.add(image);
+    /**
+    * Add an image to the planet
+    * @param {ImageDTO} image - image object
+    */
+    addImageOnPlanet(image) {
+        const material = new MeshLambertMaterial({map: new TextureLoader().load(image.url)});
+        const planeSize = this.#getPlaneSize(image);
+        const geometry = new PlaneGeometry(planeSize.width, planeSize.height);
+        const mesh = new Mesh(geometry, material);
+        this.#placeObjectOnPlanet(mesh, image.lat, image.lon, this.#planetRadius);
+        this.#planet.add(mesh);
     }
 
     #onPlanetDrag(event) {
@@ -201,5 +212,25 @@ export class PlanetKeeper {
         this.#planet.children.forEach(image => {
             image.lookAt(this.#camera.position);
         });
+    }
+
+    /**
+    * Get the plane size based on the image aspect ratio
+    * @param {ImageDTO} image - image object
+    */
+    #getPlaneSize(image) {
+        const maxSize = 0.15;
+
+        if(image.height >= image.width) {
+            return {
+                height: maxSize,
+                width: maxSize * (((image.width * 100) / image.height) / 100)
+            }
+        } else {
+            return {
+                height: maxSize * (((image.height * 100) / image.width) / 100),
+                width: maxSize
+            }
+        }
     }
 }
