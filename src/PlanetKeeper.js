@@ -21,7 +21,8 @@ import {
     X_AXIS_SHIFT_LIMIT,
     X_AXIS_FIRST_THRESHOLD,
     X_AXIS_SECOND_THRESHOLD,
-    Y_AXIS_SHIFT_LIMIT
+    Y_AXIS_SHIFT_LIMIT,
+    AXIS_ROTATION_RAD_DIVIDER
 } from './constants';
 
 const xAxisVector = new Vector3(1, 0, 0);
@@ -36,8 +37,8 @@ export class PlanetKeeper {
     #isRotating = true;
     #previousClientX = 0;
     #previousClientY = 0;
-    #xAxisShiftRadTotal = 0;
-    #yAxisShiftRadTotal = 0;
+    #xShiftRadTotal = 0;
+    #yShiftRadTotal = 0;
 
     createPlanet(canvasElementId, sceneBackgroundColor, textureAddress) {
         //Scene
@@ -76,7 +77,8 @@ export class PlanetKeeper {
     }
 
     enableZoomControls() {
-        //TODO
+        // TODO
+        // this.#onPlanetZoom()
     }
 
     start() {
@@ -98,34 +100,57 @@ export class PlanetKeeper {
     }
 
     #onPlanetDrag(event) {
-        const yAxisShiftRad = MathUtils.degToRad((event.clientX - this.#previousClientX));
         const xAxisShiftRad = MathUtils.degToRad((event.clientY - this.#previousClientY));
-        this.#xAxisShiftRadTotal += xAxisShiftRad;
-        this.#yAxisShiftRadTotal += yAxisShiftRad;
-        const absXAxisShiftRadTotal = Math.abs(this.#xAxisShiftRadTotal);
-        const absYAxisShiftRadTotal = Math.abs(this.#yAxisShiftRadTotal);
+        const yAxisShiftRad = MathUtils.degToRad((event.clientX - this.#previousClientX));
 
-        //Rotation on x axis
-        if(absXAxisShiftRadTotal < X_AXIS_SHIFT_LIMIT) {
-            this.#planet.rotateOnWorldAxis(xAxisVector, xAxisShiftRad / 5);
-        }
-        else {
-            this.#xAxisShiftRadTotal = this.#xAxisShiftRadTotal > 0 ? X_AXIS_SHIFT_LIMIT : -X_AXIS_SHIFT_LIMIT;
-        }
-
-        //Rotation on y axis
-        if(absXAxisShiftRadTotal < X_AXIS_FIRST_THRESHOLD) {
-            this.#planet.rotateOnWorldAxis(yAxisVector, yAxisShiftRad / 5);
-            this.#yAxisShiftRadTotal = 0;
-        } else if(absXAxisShiftRadTotal < X_AXIS_SECOND_THRESHOLD && absYAxisShiftRadTotal < Y_AXIS_SHIFT_LIMIT) {
-            this.#planet.rotateOnWorldAxis(yAxisVector, yAxisShiftRad / 5);
-        }
-        else {
-            this.#yAxisShiftRadTotal = this.#yAxisShiftRadTotal > 0 ? Y_AXIS_SHIFT_LIMIT : -Y_AXIS_SHIFT_LIMIT;
+        if(Math.abs(xAxisShiftRad) > Math.abs(yAxisShiftRad)) {
+            this.#rotateOnX(xAxisShiftRad);
+        } else {
+            this.#rotateOnY(yAxisShiftRad);
         }
 
         this.#previousClientX = event.clientX;
         this.#previousClientY = event.clientY;
+    }
+
+    /**
+    * Rotate planet on x axis
+    * @param {shift} shift of the rotation in radians
+    */
+    #rotateOnX(shift) {
+        this.#xShiftRadTotal += shift;
+
+        //Rotation on x axis
+        if(Math.abs(this.#xShiftRadTotal) < X_AXIS_SHIFT_LIMIT) {
+            this.#planet.rotateOnWorldAxis(xAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
+        }
+        else {
+            this.#xShiftRadTotal = this.#xShiftRadTotal > 0 ? X_AXIS_SHIFT_LIMIT : -X_AXIS_SHIFT_LIMIT;
+        }
+    }
+
+    /**
+    * Rotate planet on y axis
+    * @param {shift} shift of the rotation in radians
+    */
+    #rotateOnY(shift) {
+        this.#yShiftRadTotal += shift;
+        const absXShiftRadTotal = Math.abs(this.#xShiftRadTotal);
+        const absYShiftRadTotal = Math.abs(this.#yShiftRadTotal);
+
+        //Rotation on y axis
+        if(absXShiftRadTotal < X_AXIS_FIRST_THRESHOLD) {
+            this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
+            this.#yShiftRadTotal = 0;
+        } else if(absXShiftRadTotal < X_AXIS_SECOND_THRESHOLD && absYShiftRadTotal < Y_AXIS_SHIFT_LIMIT) {
+            this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
+        }
+        else {
+            if(absYShiftRadTotal >= Y_AXIS_SHIFT_LIMIT)
+                this.#yShiftRadTotal = this.#yShiftRadTotal > 0 ? Y_AXIS_SHIFT_LIMIT : -Y_AXIS_SHIFT_LIMIT;
+            else
+                this.#yShiftRadTotal = 0;
+        }
     }
 
     #onPlanetZoom() {

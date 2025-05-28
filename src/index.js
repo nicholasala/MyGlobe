@@ -6,6 +6,6 @@ window.onload = () => {
 
     planetKeeper.createPlanet(CANVAS_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
     planetKeeper.enableMouseControls();
-    planetKeeper.enableMouseControls();
+    planetKeeper.enableZoomControls();
     planetKeeper.start();
 };
