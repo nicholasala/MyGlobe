@@ -1,4 +1,4 @@
-export const GLOBE_ELEMENT_ID = 'globe';
+export const CANVAS_ELEMENT_ID = 'sceneCanvas';
 export const SCENE_BACKGROUND_COLOR = 0x040223;
 export const MESH_COLOR = 0xffffff;
 export const TEXTURE_ADDRESS = '/texture/earthmap.jpeg';
