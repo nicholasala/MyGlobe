@@ -92,9 +92,7 @@ export class PlanetKeeper {
 
         const update = () => {
             this.#planet.rotateOnWorldAxis(yAxisVector, EARTH_ROTATION_ANGLE_RADIANS);
-            this.#planet.children.forEach(image => {
-                image.lookAt(xAxisVector);
-            });
+            this.#alignImagesOrientation();
         }
 
         const animate = () => {
@@ -128,6 +126,7 @@ export class PlanetKeeper {
             this.#rotateOnY(yAxisShiftRad);
         }
 
+        this.#alignImagesOrientation();
         this.#previousClientX = event.clientX;
         this.#previousClientY = event.clientY;
     }
@@ -193,5 +192,14 @@ export class PlanetKeeper {
             Math.sin(latRad) * radius + IMAGES_Y_OFFSET,
             Math.cos(latRad) * Math.sin(lonRad) * radius
         );
+    }
+
+    /**
+     * Make the images parallel to the camera plane
+     */
+    #alignImagesOrientation() {
+        this.#planet.children.forEach(image => {
+            image.lookAt(this.#camera.position);
+        });
     }
 }
