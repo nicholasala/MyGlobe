@@ -8,4 +8,8 @@ window.onload = () => {
     planetKeeper.enableMouseControls();
     planetKeeper.enableZoomControls();
     planetKeeper.start();
+
+    setTimeout(() => {
+        planetKeeper.addImageOnPlanet('/demo/dipinto-carla.jpg', 67.9587305, 13.0037751);
+    }, 1000);
 };

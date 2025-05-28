@@ -11,3 +11,4 @@ export const X_AXIS_FIRST_THRESHOLD = 2.8;
 export const X_AXIS_SECOND_THRESHOLD = 5;
 export const Y_AXIS_SHIFT_LIMIT = 1.8;
 export const AXIS_ROTATION_RAD_DIVIDER = 5;
+export const IMAGES_Y_OFFSET = 0.08;
