@@ -34,11 +34,15 @@ export class PlanetKeeper {
     #renderer;
     #camera;
     #planet;
+    #isRotating;
     #planetRadius = 0.5;
-    #isRotating = true;
     #previousClientX = 0;
     #previousClientY = 0;
     #xShiftRadTotal = 0;
+
+    constructor(rotationEnabled = true) {
+        this.#isRotating = rotationEnabled;
+    }
 
     createPlanet(canvasElementId, sceneBackgroundColor, textureAddress) {
         //Scene
@@ -97,17 +101,22 @@ export class PlanetKeeper {
             requestAnimationFrame(animate);
         }
 
-        requestAnimationFrame(animate);
+        animate();
+    }
+
+    enableRotation() {
+        this.#isRotating = true;
     }
 
     /**
     * Add a list of images on the planet
     * @param {ImageDTO[]} images - image object
     */
-    addImagesOnPlanet(images) {
-        images.forEach(image => {
+    async addImagesOnPlanet(images) {
+        for(const image of images) {
             this.addImageOnPlanet(image);
-        });
+            await new Promise(resolve => setTimeout(resolve, 200));
+        }
     }
 
     /**

@@ -2,8 +2,13 @@ import { CANVAS_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS } from './co
 import { ImageDTO } from './model/ImageDTO';
 import { PlanetKeeper } from './PlanetKeeper';
 
+function hideLoader() {
+    const loaderContainer = document.getElementById('loaderContainer');
+    loaderContainer.style.display = 'none';
+}
+
 window.onload = () => {
-    const planetKeeper = new PlanetKeeper();
+    const planetKeeper = new PlanetKeeper(false);
     planetKeeper.createPlanet(CANVAS_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
     planetKeeper.enableMouseControls();
     planetKeeper.enableZoomControls();
@@ -17,6 +22,9 @@ window.onload = () => {
             new ImageDTO({width: 1343, height: 1601, url: '/demo/dipinto-carla-4.jpg', lat: 34.6829008, lon: 135.8545975})
         ]; 
 
-        planetKeeper.addImagesOnPlanet(images);
-    }, 1000);
+        planetKeeper.addImagesOnPlanet(images).then(() => {
+            planetKeeper.enableRotation();
+            hideLoader();
+        });
+    }, 2000);
 };
