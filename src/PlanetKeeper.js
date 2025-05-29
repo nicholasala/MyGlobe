@@ -21,9 +21,6 @@ import {
     MESH_COLOR,
     POINT_LIGHT_INTENSITY,
     X_AXIS_SHIFT_LIMIT,
-    X_AXIS_FIRST_THRESHOLD,
-    X_AXIS_SECOND_THRESHOLD,
-    Y_AXIS_SHIFT_LIMIT,
     AXIS_ROTATION_RAD_DIVIDER,
     IMAGES_Y_OFFSET
 } from './constants';
@@ -42,7 +39,6 @@ export class PlanetKeeper {
     #previousClientX = 0;
     #previousClientY = 0;
     #xShiftRadTotal = 0;
-    #yShiftRadTotal = 0;
 
     createPlanet(canvasElementId, sceneBackgroundColor, textureAddress) {
         //Scene
@@ -130,13 +126,8 @@ export class PlanetKeeper {
     #onPlanetDrag(event) {
         const xAxisShiftRad = MathUtils.degToRad((event.clientY - this.#previousClientY));
         const yAxisShiftRad = MathUtils.degToRad((event.clientX - this.#previousClientX));
-
-        if(Math.abs(xAxisShiftRad) > Math.abs(yAxisShiftRad)) {
-            this.#rotateOnX(xAxisShiftRad);
-        } else {
-            this.#rotateOnY(yAxisShiftRad);
-        }
-
+        this.#rotateOnX(xAxisShiftRad);
+        this.#rotateOnY(yAxisShiftRad);
         this.#alignImagesOrientation();
         this.#previousClientX = event.clientX;
         this.#previousClientY = event.clientY;
@@ -149,7 +140,6 @@ export class PlanetKeeper {
     #rotateOnX(shift) {
         this.#xShiftRadTotal += shift;
 
-        //Rotation on x axis
         if(Math.abs(this.#xShiftRadTotal) < X_AXIS_SHIFT_LIMIT) {
             this.#planet.rotateOnWorldAxis(xAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
         }
@@ -163,23 +153,7 @@ export class PlanetKeeper {
     * @param {number} shift - shift of the rotation in radians
     */
     #rotateOnY(shift) {
-        this.#yShiftRadTotal += shift;
-        const absXShiftRadTotal = Math.abs(this.#xShiftRadTotal);
-        const absYShiftRadTotal = Math.abs(this.#yShiftRadTotal);
-
-        //Rotation on y axis
-        if(absXShiftRadTotal < X_AXIS_FIRST_THRESHOLD) {
-            this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
-            this.#yShiftRadTotal = 0;
-        } else if(absXShiftRadTotal < X_AXIS_SECOND_THRESHOLD && absYShiftRadTotal < Y_AXIS_SHIFT_LIMIT) {
-            this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
-        }
-        else {
-            if(absYShiftRadTotal >= Y_AXIS_SHIFT_LIMIT)
-                this.#yShiftRadTotal = this.#yShiftRadTotal > 0 ? Y_AXIS_SHIFT_LIMIT : -Y_AXIS_SHIFT_LIMIT;
-            else
-                this.#yShiftRadTotal = 0;
-        }
+        this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
     }
 
     #onPlanetZoom() {
@@ -197,10 +171,11 @@ export class PlanetKeeper {
     #placeObjectOnPlanet(object, lat, lon, radius) {
         const latRad = lat * (Math.PI / 180);
         const lonRad = -lon * (Math.PI / 180);
+        const yOffset = lat >= 0 ? IMAGES_Y_OFFSET : - IMAGES_Y_OFFSET;
 
         object.position.set(
             Math.cos(latRad) * Math.cos(lonRad) * radius,
-            Math.sin(latRad) * radius + IMAGES_Y_OFFSET,
+            Math.sin(latRad) * radius + yOffset,
             Math.cos(latRad) * Math.sin(lonRad) * radius
         );
     }
