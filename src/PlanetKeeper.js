@@ -8,9 +8,11 @@ import {
     PerspectiveCamera,
     PlaneGeometry,
     PointLight,
+    Raycaster,
     Scene,
     SphereGeometry,
     TextureLoader,
+    Vector2,
     Vector3,
     WebGLRenderer
 } from 'three';
@@ -34,15 +36,13 @@ export class PlanetKeeper {
     #renderer;
     #camera;
     #planet;
-    #isRotating;
+    #rayCaster;
+    #pointer = new Vector2();
+    #isRotating = false;
     #planetRadius = 0.5;
     #previousClientX = 0;
     #previousClientY = 0;
     #xShiftRadTotal = 0;
-
-    constructor(rotationEnabled = true) {
-        this.#isRotating = rotationEnabled;
-    }
 
     createPlanet(canvasElementId, sceneBackgroundColor, textureAddress) {
         //Scene
@@ -53,6 +53,7 @@ export class PlanetKeeper {
         this.#renderer.setSize(window.innerWidth, window.innerHeight);
         this.#camera.position.z = 1.7;
         this.#scene.background = new Color(sceneBackgroundColor);
+        this.#rayCaster = new Raycaster();
 
         //Planet
         const earthGeometry = new SphereGeometry(this.#planetRadius, 32, 32);
@@ -67,17 +68,26 @@ export class PlanetKeeper {
         this.#scene.add(pointLight);
     }
 
-    enableMouseControls() {
+    enablePointerControls() {
         const onDrag = (event) => this.#onPlanetDrag(event);
 
-        this.#canvasElement.addEventListener('mousedown', (event) => {
+        this.#canvasElement.addEventListener('pointerdown', (event) => {
             this.#isRotating = false;
-            this.#previousClientX = event.clientX;
-            this.#previousClientY = event.clientY;
-            this.#canvasElement.addEventListener('mousemove', onDrag);
+            this.#pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	        this.#pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+            this.#rayCaster.setFromCamera(this.#pointer, this.#camera);
+            const intersections = this.#rayCaster.intersectObjects(this.#planet.children);
+
+            if(intersections.length > 0) {
+                intersections[0].object.onClick();
+            } else {
+                this.#previousClientX = event.clientX;
+                this.#previousClientY = event.clientY;
+                this.#canvasElement.addEventListener('pointermove', onDrag);
+            }
         });
 
-        this.#canvasElement.addEventListener('mouseup', () => this.#canvasElement.removeEventListener('mousemove', onDrag));
+        this.#canvasElement.addEventListener('pointerup', () => this.#canvasElement.removeEventListener('pointermove', onDrag));
     }
 
     enableZoomControls() {
@@ -111,10 +121,11 @@ export class PlanetKeeper {
     /**
     * Add a list of images on the planet
     * @param {ImageDTO[]} images - image object
+    * @param {Function} getClickCallback - function that accepts an image and return the on click callback associated
     */
-    async addImagesOnPlanet(images) {
+    async addImagesOnPlanet(images, getClickCallback) {
         for(const image of images) {
-            this.addImageOnPlanet(image);
+            this.addImageOnPlanet(image, getClickCallback(image));
             await new Promise(resolve => setTimeout(resolve, 200));
         }
     }
@@ -122,13 +133,15 @@ export class PlanetKeeper {
     /**
     * Add an image to the planet
     * @param {ImageDTO} image - image object
+    * @param {Function} onClick - on click callback
     */
-    addImageOnPlanet(image) {
+    addImageOnPlanet(image, onClick) {
         const material = new MeshLambertMaterial({map: new TextureLoader().load(image.url)});
         const planeSize = this.#getPlaneSize(image);
         const geometry = new PlaneGeometry(planeSize.width, planeSize.height);
         const mesh = new Mesh(geometry, material);
-        this.#placeObjectOnPlanet(mesh, image.lat, image.lon, this.#planetRadius);
+        mesh.onClick = onClick;
+        this.#placeImageOnPlanet(mesh, image.lat, image.lon, this.#planetRadius);
         this.#planet.add(mesh);
     }
 
@@ -170,19 +183,19 @@ export class PlanetKeeper {
     }
 
     /**
-     * Position an object on a planet.
-     * @param {Object3D} object - the object to place
+     * Position an image on a planet.
+     * @param {Object3D} image - the image to place
      * @param {number} lat - latitude of the location
      * @param {number} lon - longitude of the location
      * @param {number} radius - radius of the planet
      * source: https://stackoverflow.com/questions/46017167/how-to-place-marker-with-lat-lon-on-3d-globe-three-js
      */
-    #placeObjectOnPlanet(object, lat, lon, radius) {
+    #placeImageOnPlanet(image, lat, lon, radius) {
         const latRad = lat * (Math.PI / 180);
         const lonRad = -lon * (Math.PI / 180);
         const yOffset = lat >= 0 ? IMAGES_Y_OFFSET : - IMAGES_Y_OFFSET;
 
-        object.position.set(
+        image.position.set(
             Math.cos(latRad) * Math.cos(lonRad) * radius,
             Math.sin(latRad) * radius + yOffset,
             Math.cos(latRad) * Math.sin(lonRad) * radius

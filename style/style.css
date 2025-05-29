@@ -1,6 +1,7 @@
 body {
     height: 100vh;
     margin: 0;
+    background-color: #040223;
 }
 
 #sceneCanvas {
@@ -46,4 +47,40 @@ body {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.popup-container {
+    height: 100%;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: #3a5068;
+}
+
+.popup {
+    position: fixed;
+    background-color: white;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.popup-title {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+.popup-image {
+    width: 100%;
+    height: auto;
+    max-width: 18rem;
+}
+
+.close-icon {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    cursor: pointer;
 }
