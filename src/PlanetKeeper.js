@@ -90,9 +90,8 @@ export class PlanetKeeper {
         this.#canvasElement.addEventListener('pointerup', () => this.#canvasElement.removeEventListener('pointermove', onDrag));
     }
 
-    enableZoomControls() {
-        // TODO
-        // this.#onPlanetZoom()
+    enableRotation() {
+        this.#isRotating = true;
     }
 
     start() {
@@ -112,10 +111,6 @@ export class PlanetKeeper {
         }
 
         animate();
-    }
-
-    enableRotation() {
-        this.#isRotating = true;
     }
 
     /**
@@ -146,6 +141,7 @@ export class PlanetKeeper {
     }
 
     #onPlanetDrag(event) {
+        event.preventDefault();
         const xAxisShiftRad = MathUtils.degToRad((event.clientY - this.#previousClientY));
         const yAxisShiftRad = MathUtils.degToRad((event.clientX - this.#previousClientX));
         this.#rotateOnX(xAxisShiftRad);
@@ -178,10 +174,6 @@ export class PlanetKeeper {
         this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
     }
 
-    #onPlanetZoom() {
-        //TODO
-    }
-
     /**
      * Position an image on a planet.
      * @param {Object3D} image - the image to place
@@ -193,13 +185,22 @@ export class PlanetKeeper {
     #placeImageOnPlanet(image, lat, lon, radius) {
         const latRad = lat * (Math.PI / 180);
         const lonRad = -lon * (Math.PI / 180);
-        const yOffset = lat >= 0 ? IMAGES_Y_OFFSET : - IMAGES_Y_OFFSET;
 
         image.position.set(
             Math.cos(latRad) * Math.cos(lonRad) * radius,
-            Math.sin(latRad) * radius + yOffset,
+            Math.sin(latRad) * radius + this.#getImageYOffset(lat),
             Math.cos(latRad) * Math.sin(lonRad) * radius
         );
+    }
+
+    /**
+     * Get the y offset of an image in order to make it completely visible (outside the sphere)
+     * @param {number} lat - latitude of the image
+     */
+    #getImageYOffset(lat) {
+        const signFactor = lat >= 0 ? 1 : -1;
+        const offsetFactor = Math.abs(lat) > 30 ? 1 : Math.abs(lat) > 10 ? 1.5 : 2;
+        return IMAGES_Y_OFFSET * offsetFactor * signFactor;
     }
 
     /**
