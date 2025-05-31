@@ -1,4 +1,4 @@
-import { CANVAS_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS } from './constants';
+import { CANVAS_CONTAINER_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS } from './constants';
 import { ImageDTO } from './model/ImageDTO';
 import { PlanetKeeper } from './PlanetKeeper';
 
@@ -27,7 +27,7 @@ function getImageClickCallback(image) {
 
 window.onload = () => {
     const planetKeeper = new PlanetKeeper();
-    planetKeeper.createPlanet(CANVAS_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
+    planetKeeper.createPlanet(CANVAS_CONTAINER_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
     planetKeeper.enablePointerControls();
     planetKeeper.start();
 

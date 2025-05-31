@@ -1,14 +1,55 @@
 body {
-    height: 100vh;
     margin: 0;
     background-color: #040223;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
-#sceneCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
+header {
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    height: 10rem;
+    color: white;
+}
+
+.main-section {
+    max-height: calc(100vh - 10rem);
+}
+
+.canvas-container {
+    position: relative;
+    height: calc(100vh - 16rem);
+    min-height: 10rem;
+    width: 100%;
+    margin: 0;
+    border: 0;
+    overflow: hidden;
     cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    height: 4rem;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.open-gallery-button {
+    height: 3rem;
+    line-height: 3rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #f1f902;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: transparent;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 2px solid #f1f902;
+    box-shadow: rgba(241, 249, 4, 0.16) 0px 8px 28px, rgba(241, 249, 4, 0.23) 0px 8px 28px;
 }
 
 .loader-container {
@@ -25,8 +66,7 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
-    opacity: 0.8;
-    background-color: #3a5068;
+    background-color: transparent;
 }
 
 .loader {
@@ -66,7 +106,7 @@ body {
 }
 
 .popup-title {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
 }
 

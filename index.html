@@ -2,30 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>My globe</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="sceneCanvas"></canvas>
+    <header>
+        <div>
+            <h1>Viento Mosse</h1>
+            <div>sign</div>
+            <span>World painting project</span>
+        </div>
+    </header>
 
-    <div id="loaderContainer" class="loader-container">
-        <div class="pause-mask"></div>
-        <div class="loader"></div>
-    </div>
-
-    <div id="popupContainer" class="popup-container">
-        <div class="pause-mask"></div>
-        <div class="popup">
-            <h1 id="popupTitle" class="popup-title"></h1>
-            <div id="closeIcon" class="close-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
+    <div class="main-section">
+        <div id="canvasContainer" class="canvas-container">
+            <div id="loaderContainer" class="loader-container">
+                <div class="pause-mask"></div>
+                <div class="loader"></div>
             </div>
-            <img id="popupImage" class="popup-image"></img>
+
+            <div id="popupContainer" class="popup-container">
+                <div class="pause-mask"></div>
+                <div class="popup">
+                    <h1 id="popupTitle" class="popup-title"></h1>
+                    <div id="closeIcon" class="close-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+                    <img id="popupImage" class="popup-image"></img>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <div class="open-gallery-button">Open gallery</div>
         </div>
     </div>
+
     <script defer src="main.js"></script>
 </body>
 </html> 

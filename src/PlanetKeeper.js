@@ -32,7 +32,7 @@ const yAxisVector = new Vector3(0, 1, 0);
 
 export class PlanetKeeper {
     #scene;
-    #canvasElement;
+    #canvasContainerElement;
     #renderer;
     #camera;
     #planet;
@@ -44,15 +44,22 @@ export class PlanetKeeper {
     #previousClientY = 0;
     #xShiftRadTotal = 0;
 
-    createPlanet(canvasElementId, sceneBackgroundColor, textureAddress) {
+    /**
+    * Create the planet in the scene
+    * @param {String} canvasContainerElementId - id of container element of the scene
+    * @param {Hexadecimal color} sceneBackgroundColor - color of the background of the scene
+    * @param {String} textureAddress - address of the planet texture
+    */
+    createPlanet(canvasContainerElementId, sceneBackgroundColor, textureAddress) {
         //Scene
         this.#scene = new Scene();
-        this.#canvasElement = document.getElementById(canvasElementId);
-        this.#renderer = new WebGLRenderer({ canvas: this.#canvasElement });
-        this.#camera = new PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.4, 1000);
-        this.#renderer.setSize(window.innerWidth, window.innerHeight);
-        this.#camera.position.z = 1.7;
         this.#scene.background = new Color(sceneBackgroundColor);
+        this.#canvasContainerElement = document.getElementById(canvasContainerElementId);
+        this.#renderer = new WebGLRenderer({antialias: true});
+        this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight);
+        this.#canvasContainerElement.appendChild(this.#renderer.domElement);
+        this.#camera = new PerspectiveCamera(30, this.#canvasContainerElement.clientWidth / this.#canvasContainerElement.clientHeight);
+        this.#camera.position.z = 3;
         this.#rayCaster = new Raycaster();
 
         //Planet
@@ -66,12 +73,15 @@ export class PlanetKeeper {
         const pointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
         pointLight.position.set(-5, 0, 5);
         this.#scene.add(pointLight);
+
+        //Window resize event
+        window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
     }
 
     enablePointerControls() {
         const onDrag = (event) => this.#onPlanetDrag(event);
 
-        this.#canvasElement.addEventListener('pointerdown', (event) => {
+        this.#canvasContainerElement.addEventListener('pointerdown', (event) => {
             this.#isRotating = false;
             this.#pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	        this.#pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -83,11 +93,11 @@ export class PlanetKeeper {
             } else {
                 this.#previousClientX = event.clientX;
                 this.#previousClientY = event.clientY;
-                this.#canvasElement.addEventListener('pointermove', onDrag);
+                this.#canvasContainerElement.addEventListener('pointermove', onDrag);
             }
         });
 
-        this.#canvasElement.addEventListener('pointerup', () => this.#canvasElement.removeEventListener('pointermove', onDrag));
+        this.#canvasContainerElement.addEventListener('pointerup', () => this.#canvasContainerElement.removeEventListener('pointermove', onDrag));
     }
 
     enableRotation() {
@@ -141,7 +151,6 @@ export class PlanetKeeper {
     }
 
     #onPlanetDrag(event) {
-        event.preventDefault();
         const xAxisShiftRad = MathUtils.degToRad((event.clientY - this.#previousClientY));
         const yAxisShiftRad = MathUtils.degToRad((event.clientX - this.#previousClientX));
         this.#rotateOnX(xAxisShiftRad);
