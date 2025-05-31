@@ -1,7 +1,5 @@
 import {
-    AmbientLight,
     Color,
-    MathUtils,
     Mesh,
     MeshLambertMaterial,
     MeshPhongMaterial,
@@ -17,17 +15,14 @@ import {
     WebGLRenderer
 } from 'three';
 import {
-    AMBIENT_LIGHT_INTENSITY,
     EARTH_ROTATION_ANGLE_RADIANS,
     LIGHT_COLOR,
     MESH_COLOR,
     POINT_LIGHT_INTENSITY,
-    X_AXIS_SHIFT_LIMIT,
-    AXIS_ROTATION_RAD_DIVIDER,
     IMAGES_Y_OFFSET
 } from './constants';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-const xAxisVector = new Vector3(1, 0, 0);
 const yAxisVector = new Vector3(0, 1, 0);
 
 export class PlanetKeeper {
@@ -36,13 +31,12 @@ export class PlanetKeeper {
     #renderer;
     #camera;
     #planet;
+    #pointLight;
     #rayCaster;
+    #controls;
     #pointer = new Vector2();
     #isRotating = false;
     #planetRadius = 0.5;
-    #previousClientX = 0;
-    #previousClientY = 0;
-    #xShiftRadTotal = 0;
 
     /**
     * Create the planet in the scene
@@ -60,7 +54,9 @@ export class PlanetKeeper {
         this.#canvasContainerElement.appendChild(this.#renderer.domElement);
         this.#camera = new PerspectiveCamera(30, this.#canvasContainerElement.clientWidth / this.#canvasContainerElement.clientHeight);
         this.#camera.position.z = 3;
+        this.#camera.lookAt(this.#scene.position);
         this.#rayCaster = new Raycaster();
+        this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
 
         //Planet
         const earthGeometry = new SphereGeometry(this.#planetRadius, 32, 32);
@@ -69,18 +65,14 @@ export class PlanetKeeper {
         this.#scene.add(this.#planet);
 
         //Light
-        this.#scene.add(new AmbientLight(LIGHT_COLOR, AMBIENT_LIGHT_INTENSITY));
-        const pointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        pointLight.position.set(-5, 0, 5);
-        this.#scene.add(pointLight);
+        this.#pointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        this.#scene.add(this.#pointLight);
 
         //Window resize event
         window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
     }
 
-    enablePointerControls() {
-        const onDrag = (event) => this.#onPlanetDrag(event);
-
+    enableClickOnImages() {
         this.#canvasContainerElement.addEventListener('pointerdown', (event) => {
             this.#isRotating = false;
             const {top, left, width, height} = this.#renderer.domElement.getBoundingClientRect();
@@ -89,16 +81,9 @@ export class PlanetKeeper {
             this.#rayCaster.setFromCamera(this.#pointer, this.#camera);
             const intersections = this.#rayCaster.intersectObjects(this.#planet.children);
 
-            if(intersections.length > 0) {
+            if(intersections.length > 0)
                 intersections[0].object.onClick();
-            } else {
-                this.#previousClientX = event.clientX;
-                this.#previousClientY = event.clientY;
-                this.#canvasContainerElement.addEventListener('pointermove', onDrag);
-            }
         });
-
-        this.#canvasContainerElement.addEventListener('pointerup', () => this.#canvasContainerElement.removeEventListener('pointermove', onDrag));
     }
 
     enableRotation() {
@@ -106,18 +91,13 @@ export class PlanetKeeper {
     }
 
     start() {
-        const render = () => {
-            this.#renderer.render(this.#scene, this.#camera);
-        }
-
-        const update = () => {
-            this.#planet.rotateOnWorldAxis(yAxisVector, EARTH_ROTATION_ANGLE_RADIANS);
-            this.#alignImagesOrientation();
-        }
-
         const animate = () => {
-            render();
-            if(this.#isRotating) update();
+            if(this.#isRotating)
+                this.#planet.rotateOnWorldAxis(yAxisVector, EARTH_ROTATION_ANGLE_RADIANS);
+
+            this.#alignLightPosition();
+            this.#alignImagesOrientation();
+            this.#renderer.render(this.#scene, this.#camera);
             requestAnimationFrame(animate);
         }
 
@@ -149,39 +129,6 @@ export class PlanetKeeper {
         mesh.onClick = onClick;
         this.#placeImageOnPlanet(mesh, image.lat, image.lon, this.#planetRadius);
         this.#planet.add(mesh);
-    }
-
-    #onPlanetDrag(event) {
-        const xAxisShiftRad = MathUtils.degToRad((event.clientY - this.#previousClientY));
-        const yAxisShiftRad = MathUtils.degToRad((event.clientX - this.#previousClientX));
-        this.#rotateOnX(xAxisShiftRad);
-        this.#rotateOnY(yAxisShiftRad);
-        this.#alignImagesOrientation();
-        this.#previousClientX = event.clientX;
-        this.#previousClientY = event.clientY;
-    }
-
-    /**
-    * Rotate planet on x axis
-    * @param {number} shift - shift of the rotation in radians
-    */
-    #rotateOnX(shift) {
-        this.#xShiftRadTotal += shift;
-
-        if(Math.abs(this.#xShiftRadTotal) < X_AXIS_SHIFT_LIMIT) {
-            this.#planet.rotateOnWorldAxis(xAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
-        }
-        else {
-            this.#xShiftRadTotal = this.#xShiftRadTotal > 0 ? X_AXIS_SHIFT_LIMIT : -X_AXIS_SHIFT_LIMIT;
-        }
-    }
-
-    /**
-    * Rotate planet on y axis
-    * @param {number} shift - shift of the rotation in radians
-    */
-    #rotateOnY(shift) {
-        this.#planet.rotateOnWorldAxis(yAxisVector, shift / AXIS_ROTATION_RAD_DIVIDER);
     }
 
     /**
@@ -220,6 +167,13 @@ export class PlanetKeeper {
         this.#planet.children.forEach(image => {
             image.lookAt(this.#camera.position);
         });
+    }
+
+    /**
+     * Set the position of the light as the position of the camera
+     */
+    #alignLightPosition() {
+        this.#pointLight.position.copy(this.#camera.position);
     }
 
     /**
