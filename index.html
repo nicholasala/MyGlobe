@@ -33,8 +33,18 @@
         <div id="canvasContainer" class="canvas-container"></div>
     </div>
     <footer>
-        <div class="open-gallery-button">Open gallery</div>
+        <div class="open-gallery-button">Open Gallery</div>
     </footer>
+    <script>
+        //https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+        function saveVhVariable() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        window.addEventListener('resize', saveVhVariable);
+        saveVhVariable();
+    </script>
     <script defer src="main.js"></script>
 </body>
 </html> 
