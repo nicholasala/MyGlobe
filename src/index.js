@@ -25,6 +25,13 @@ function getImageClickCallback(image) {
     return () => showImagePopup(image);
 }
 
+function disableCanvasSelection() {
+    const container = document.getElementById(CANVAS_CONTAINER_ELEMENT_ID);
+
+    if(container.childElementCount > 0)
+        container.children[0].classList.add('not-selectable');
+}
+
 window.onload = () => {
     const planetKeeper = new PlanetKeeper();
     planetKeeper.createPlanet(CANVAS_CONTAINER_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
@@ -44,6 +51,7 @@ window.onload = () => {
 
         planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {
             planetKeeper.enableRotation();
+            disableCanvasSelection();
             hideLoader();
         });
 
