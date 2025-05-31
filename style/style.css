@@ -11,6 +11,37 @@ header {
     justify-content: center;
     height: 10rem;
     color: white;
+    padding-top: 2px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.sign {
+    height: auto;
+    width: auto;
+    max-height: 5rem;
+    max-width: 20rem;
+    margin: 0;
+}
+
+.header-title {
+    width: 100%;
+    display: block;
+    text-align: right;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.header-subtitle {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0;
 }
 
 .main-section {
@@ -32,10 +63,8 @@ header {
 footer {
     display: flex;
     justify-content: center;
-    height: 4rem;
+    height: 6rem;
     width: 100%;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
 }
 
 .open-gallery-button {
