@@ -83,8 +83,9 @@ export class PlanetKeeper {
 
         this.#canvasContainerElement.addEventListener('pointerdown', (event) => {
             this.#isRotating = false;
-            this.#pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	        this.#pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+            const {top, left, width, height} = this.#renderer.domElement.getBoundingClientRect();
+            this.#pointer.x = -1 + 2 * (event.clientX - left) / width;
+	        this.#pointer.y = 1 - 2 * (event.clientY - top) / height;
             this.#rayCaster.setFromCamera(this.#pointer, this.#camera);
             const intersections = this.#rayCaster.intersectObjects(this.#planet.children);
 

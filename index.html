@@ -14,32 +14,27 @@
             <span>World painting project</span>
         </div>
     </header>
-
     <div class="main-section">
-        <div id="canvasContainer" class="canvas-container">
-            <div id="loaderContainer" class="loader-container">
-                <div class="pause-mask"></div>
-                <div class="loader"></div>
-            </div>
-
-            <div id="popupContainer" class="popup-container">
-                <div class="pause-mask"></div>
-                <div class="popup">
-                    <h1 id="popupTitle" class="popup-title"></h1>
-                    <div id="closeIcon" class="close-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
-                    </div>
-                    <img id="popupImage" class="popup-image"></img>
+        <div id="loaderContainer" class="loader-container">
+            <div class="loader"></div>
+        </div>
+        <div id="popupContainer" class="popup-container">
+            <div class="popup-mask"></div>
+            <div class="popup">
+                <h1 id="popupTitle" class="popup-title"></h1>
+                <div id="closeIcon" class="close-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
                 </div>
+                <img id="popupImage" class="popup-image"></img>
             </div>
         </div>
-        <div class="button-container">
-            <div class="open-gallery-button">Open gallery</div>
-        </div>
+        <div id="canvasContainer" class="canvas-container"></div>
     </div>
-
+    <footer>
+        <div class="open-gallery-button">Open gallery</div>
+    </footer>
     <script defer src="main.js"></script>
 </body>
 </html> 

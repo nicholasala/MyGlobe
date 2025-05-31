@@ -14,21 +14,22 @@ header {
 }
 
 .main-section {
-    max-height: calc(100vh - 10rem);
+    position: relative;
+    height: calc(100vh - 16rem);
+    width: 100%;
 }
 
 .canvas-container {
-    position: relative;
-    height: calc(100vh - 16rem);
-    min-height: 10rem;
+    height: 100%;
     width: 100%;
+    min-height: 10rem;
     margin: 0;
     border: 0;
     overflow: hidden;
     cursor: pointer;
 }
 
-.button-container {
+footer {
     display: flex;
     justify-content: center;
     height: 4rem;
@@ -41,38 +42,31 @@ header {
     height: 3rem;
     line-height: 3rem;
     font-family: 'Courier New', Courier, monospace;
-    color: #f1f902;
+    color: white;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     background-color: transparent;
     font-weight: bold;
     border-radius: 0.5rem;
     cursor: pointer;
-    border: 2px solid #f1f902;
-    box-shadow: rgba(241, 249, 4, 0.16) 0px 8px 28px, rgba(241, 249, 4, 0.23) 0px 8px 28px;
+    border: 2px solid white;
+    box-shadow: rgba(255, 255, 255, 0.16) 0px 8px 28px, rgba(255, 255, 255, 0.23) 0px 8px 28px;
 }
 
 .loader-container {
+    position: absolute;
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.pause-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: transparent;
+    background-color: #040223;
 }
 
 .loader {
     width: 48px;
     height: 48px;
-    border: 5px solid #FFF;
+    border: 5px solid white;
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;
@@ -90,15 +84,24 @@ header {
 }
 
 .popup-container {
+    position: absolute;
     height: 100%;
     width: 100%;
     display: none;
     justify-content: center;
     align-items: center;
-    background-color: #3a5068;
+}
+
+.popup-mask {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #040223;
+    opacity: 0.4;
 }
 
 .popup {
+    opacity: 1;
     position: fixed;
     background-color: white;
     border-radius: 6px;
