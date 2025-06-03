@@ -56,7 +56,6 @@ export class PlanetKeeper {
         this.#camera.position.z = 3;
         this.#camera.lookAt(this.#scene.position);
         this.#rayCaster = new Raycaster();
-        this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
 
         //Planet
         const earthGeometry = new SphereGeometry(this.#planetRadius, 32, 32);
@@ -70,6 +69,10 @@ export class PlanetKeeper {
 
         //Window resize event
         window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
+    }
+
+    enableRotation() {
+        this.#isRotating = true;
     }
 
     enableClickOnImages() {
@@ -86,16 +89,15 @@ export class PlanetKeeper {
         });
     }
 
-    enableRotation() {
-        this.#isRotating = true;
+    enableControls() {
+        this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
+        this.#controls.enableZoom = false;
     }
 
     start() {
         const animate = () => {
-            if(this.#isRotating)
-                this.#planet.rotateOnWorldAxis(yAxisVector, EARTH_ROTATION_ANGLE_RADIANS);
-
-            this.#alignLightPosition();
+            if(this.#isRotating) this.#planet.rotateOnWorldAxis(yAxisVector, EARTH_ROTATION_ANGLE_RADIANS);
+            if(this.#controls) this.#alignLightPosition();
             this.#alignImagesOrientation();
             this.#renderer.render(this.#scene, this.#camera);
             requestAnimationFrame(animate);

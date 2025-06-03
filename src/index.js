@@ -36,6 +36,7 @@ window.onload = () => {
     const planetKeeper = new PlanetKeeper();
     planetKeeper.createPlanet(CANVAS_CONTAINER_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
     planetKeeper.start();
+    disableCanvasSelection();
 
     setTimeout(() => {
         const images = [
@@ -51,7 +52,7 @@ window.onload = () => {
         planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {
             planetKeeper.enableRotation();
             planetKeeper.enableClickOnImages();
-            disableCanvasSelection();
+            planetKeeper.enableControls();
             hideLoader();
         });
 
