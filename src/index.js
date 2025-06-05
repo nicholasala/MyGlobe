@@ -1,4 +1,3 @@
-import { CANVAS_CONTAINER_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS } from './constants';
 import { ImageDTO } from './model/ImageDTO';
 import { PlanetKeeper } from './PlanetKeeper';
 
@@ -44,25 +43,25 @@ function getImageClickCallback(image) {
     return () => showImagePopup(image);
 }
 
-function disableCanvasSelection() {
-    const container = document.getElementById(CANVAS_CONTAINER_ELEMENT_ID);
+function disableCanvasSelection(containerId) {
+    const container = document.getElementById(containerId);
 
     if(container.childElementCount > 0)
         container.children[0].classList.add('not-selectable');
 }
 
 window.onload = () => {
-    const planetKeeper = new PlanetKeeper();
-    planetKeeper.createPlanet(CANVAS_CONTAINER_ELEMENT_ID, SCENE_BACKGROUND_COLOR, TEXTURE_ADDRESS);
-    planetKeeper.start();
-    disableCanvasSelection();
+    fetch('/my-globe-config.json')
+        .then(res => res.json())
+        .then(config => {
+            const planetKeeper = new PlanetKeeper();
+            planetKeeper.createPlanet(config.canvasContainerId, Number(config.sceneBackgroundColor), config.texture);
+            planetKeeper.start();
+            if(config.primaryColor) document.documentElement.style.setProperty('--primary-color', config.primaryColor)
+            disableCanvasSelection(config.canvasContainerId);
 
-    setTimeout(() => {
-        fetch('/my-globe-config.json')
-            .then(res => res.json())
-            .then(config => {
+            setTimeout(() => {
                 const images = config.images.map(image => new ImageDTO(image));
-
                 planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {
                     planetKeeper.addStars(300, 50);
                     planetKeeper.addStars(100, 32);
@@ -72,9 +71,9 @@ window.onload = () => {
                     planetKeeper.enableControls();
                     hideLoader();
                 });
-            });
 
-        const closePopupIcon = document.getElementById('closeIcon');
-        closePopupIcon.addEventListener('click', hideImagePopup);
-    }, 2000);
+                const closePopupIcon = document.getElementById('closeIcon');
+                closePopupIcon.addEventListener('click', hideImagePopup);
+            }, 2000); 
+        });
 };
