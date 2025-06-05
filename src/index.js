@@ -26,7 +26,7 @@ function showImagePopup(image) {
 
     if(image.actions && image.actions.length > 0) {
         buttonsContainer.innerHTML = image.actions.reduce((html, action) => {
-            return `${html}<a href="${action.url}"><div class="popup-button">${action.text}</div></a>`
+            return `${html}<a href="${action.url}" class="popup-button-link"><div class="popup-button">${action.text}</div></a>`
         }, '');
     }
 

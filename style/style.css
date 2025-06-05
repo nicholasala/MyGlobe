@@ -207,6 +207,10 @@ footer {
     flex-wrap: wrap;
 }
 
+.popup-button-link {
+    text-decoration: none;
+}
+
 .popup-button {
     height: 3rem;
     line-height: 3rem;
@@ -221,8 +225,4 @@ footer {
     cursor: pointer;
     border: 2px solid var(--primary-color);
     box-shadow: var(--primary-color) 0px 4px 8px;
-}
-
-.popup-button:hover {
-    transform: translateY(-2px);
 }
