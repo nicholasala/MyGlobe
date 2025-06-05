@@ -11,15 +11,25 @@ function showImagePopup(image) {
     const popupContainer = document.getElementById('popupContainer');
     const popupTitle = document.getElementById('popupTitle');
     const popupImage = document.getElementById('popupImage');
+    const popupDescription = document.getElementById('popupDescription');
+    const buttonsContainer = document.getElementById('buttonsContainer');
+    popupTitle.innerText = image.nation;
+    popupImage.src = image.url;
+    popupDescription.style.display = 'none';
+    popupDescription.innerText = '';
+    buttonsContainer.innerHTML = '';
 
     if(image.description) {
-        const popupDescription = document.getElementById('popupDescription');
         popupDescription.style.display = 'block';
         popupDescription.innerText = image.description;
     }
 
-    popupTitle.innerText = image.nation;
-    popupImage.src = image.url;
+    if(image.actions && image.actions.length > 0) {
+        buttonsContainer.innerHTML = image.actions.reduce((html, action) => {
+            return `${html}<a href="${action.url}"><div class="popup-button">${action.text}</div></a>`
+        }, '');
+    }
+
     popupContainer.style.display = 'flex';
     popupContainer.classList.add('appear-animation');
     setTimeout(() => popupContainer.classList.remove('appear-animation'), 800);
@@ -27,9 +37,6 @@ function showImagePopup(image) {
 
 function hideImagePopup() {
     const popupContainer = document.getElementById('popupContainer');
-    const popupDescription = document.getElementById('popupDescription');
-    popupDescription.style.display = 'none';
-    popupDescription.innerText = '';
     popupContainer.style.display = 'none';
 }
 
@@ -51,25 +58,21 @@ window.onload = () => {
     disableCanvasSelection();
 
     setTimeout(() => {
-        const images = [
-            new ImageDTO({width: 1284, height: 1590, url: '/demo/dipinto-carla.jpg', lat: 67.9587305, lon: 13.0037751, nation: 'Norway', description: 'Una descrizione'}),
-            new ImageDTO({width: 1433, height: 2001, url: '/demo/dipinto-carla-2.jpg', lat: -41.2887953, lon: 174.7772114, nation: 'New Zeland', description: ''}),
-            new ImageDTO({width: 2001, height: 1215, url: '/demo/dipinto-carla-3.jpg', lat: 52.3730796, lon: 4.8924534, nation: 'Netherlands', description: ''}),
-            new ImageDTO({width: 1343, height: 1601, url: '/demo/dipinto-carla-4.jpg', lat: 34.6829008, lon: 135.8545975, nation: 'Japan', description: ''}),
-            new ImageDTO({width: 1433, height: 2001, url: '/demo/dipinto-carla-5.jpg', lat: 36.7014631, lon: -118.755997, nation: 'California', description: ''}),
-            new ImageDTO({width: 1313, height: 1829, url: '/demo/dipinto-carla-6.jpg', lat: 1.357107, lon: 103.8194992, nation: 'Singapore', description: ''}),
-            new ImageDTO({width: 1141, height: 1969, url: '/demo/dipinto-carla-7.jpg', lat: -18.1239696, lon: 179.0122737, nation: 'Fiji islands', description: ''})
-        ];
+        fetch('/my-globe-config.json')
+            .then(res => res.json())
+            .then(config => {
+                const images = config.images.map(image => new ImageDTO(image));
 
-        planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {
-            planetKeeper.addStars(300, 50);
-            planetKeeper.addStars(100, 32);
-            planetKeeper.addStars(100, 28);
-            planetKeeper.addStars(100, 30);
-            planetKeeper.enableClickOnImages();
-            planetKeeper.enableControls();
-            hideLoader();
-        });
+                planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {
+                    planetKeeper.addStars(300, 50);
+                    planetKeeper.addStars(100, 32);
+                    planetKeeper.addStars(100, 28);
+                    planetKeeper.addStars(100, 30);
+                    planetKeeper.enableClickOnImages();
+                    planetKeeper.enableControls();
+                    hideLoader();
+                });
+            });
 
         const closePopupIcon = document.getElementById('closeIcon');
         closePopupIcon.addEventListener('click', hideImagePopup);
