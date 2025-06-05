@@ -1,0 +1,27 @@
+{
+  "images": [
+    {
+      "nation": "Norway",
+      "width": 1284,
+      "height": 1590,
+      "url": "/image/1/url",
+      "lat": 67,
+      "lon": 13,
+      "description": "Optional description",
+      "actions": [
+        {"text": "open", "url": "/open/image/url"},
+        {"text": "download", "url": "/download/image/url"}
+      ]
+    },
+    {
+      "nation": "Singapore",
+      "width": 1284,
+      "height": 1590,
+      "url": "/image/2/url",
+      "lat": 1.35,
+      "lon": 103.8,
+      "description": "",
+      "actions": []
+    }
+  ]
+}
