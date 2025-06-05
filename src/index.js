@@ -14,6 +14,8 @@ function showImagePopup(image) {
     popupTitle.innerText = image.nation;
     popupImage.src = image.url;
     popupContainer.style.display = 'flex';
+    popupContainer.classList.add('appear-animation');
+    setTimeout(() => popupContainer.classList.remove('appear-animation'), 800);
 }
 
 function hideImagePopup() {
@@ -50,7 +52,7 @@ window.onload = () => {
         ];
 
         planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {
-            planetKeeper.enableRotation();
+            planetKeeper.enableStars();
             planetKeeper.enableClickOnImages();
             planetKeeper.enableControls();
             hideLoader();

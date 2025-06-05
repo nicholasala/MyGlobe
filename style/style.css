@@ -1,6 +1,10 @@
+:root {
+  --primary-color: #040223;
+}
+
 body {
     margin: 0;
-    background-color: #040223;
+    background-color: var(--primary-color);
     overflow-y: hidden;
     overflow-x: hidden;
     flex-direction: column;
@@ -95,6 +99,11 @@ footer {
     box-shadow: rgba(255, 255, 255, 0.16) 0px 8px 28px, rgba(255, 255, 255, 0.23) 0px 8px 28px;
 }
 
+.open-gallery-button:hover {
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 8px 28px, rgba(255, 255, 255, 0.32) 0px 8px 28px;
+    transform: translateY(-2px);
+}
+
 .loader-container {
     position: absolute;
     height: 100%;
@@ -102,7 +111,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #040223;
+    background-color: var(--primary-color);
 }
 
 .loader {
@@ -138,16 +147,32 @@ footer {
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: #040223;
+    background-color: var(--primary-color);
     opacity: 0.4;
 }
 
 .popup {
+    width: 20rem;
+    max-height: 75%;
     opacity: 1;
     position: fixed;
     background-color: white;
     border-radius: 6px;
-    padding: 6px;
+    padding: 1rem;
+    overflow-y: scroll;
+}
+
+.appear-animation {
+    animation: appear 800ms linear;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .popup-title {
@@ -158,7 +183,6 @@ footer {
 .popup-image {
     width: 100%;
     height: auto;
-    max-width: 18rem;
 }
 
 .close-icon {
@@ -168,4 +192,31 @@ footer {
     top: 6px;
     right: 6px;
     cursor: pointer;
+}
+
+.buttons-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.popup-button {
+    height: 3rem;
+    line-height: 3rem;
+    margin-top: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--primary-color);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background-color: transparent;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 2px solid var(--primary-color);
+    box-shadow: var(--primary-color) 0px 4px 8px;
+}
+
+.popup-button:hover {
+    transform: translateY(-2px);
 }

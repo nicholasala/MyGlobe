@@ -4,5 +4,4 @@ export const MESH_COLOR = 0xffffff;
 export const TEXTURE_ADDRESS = '/texture/earthmap.jpeg';
 export const LIGHT_COLOR = 0xffffff;
 export const POINT_LIGHT_INTENSITY = 28;
-export const EARTH_ROTATION_ANGLE_RADIANS = 0.2 * Math.PI/180;
 export const IMAGES_Y_OFFSET = 0.14;

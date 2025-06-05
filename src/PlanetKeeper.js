@@ -1,6 +1,7 @@
 import {
     Color,
     Mesh,
+    MeshBasicMaterial,
     MeshLambertMaterial,
     MeshPhongMaterial,
     PerspectiveCamera,
@@ -15,7 +16,6 @@ import {
     WebGLRenderer
 } from 'three';
 import {
-    EARTH_ROTATION_ANGLE_RADIANS,
     LIGHT_COLOR,
     MESH_COLOR,
     POINT_LIGHT_INTENSITY,
@@ -35,7 +35,6 @@ export class PlanetKeeper {
     #rayCaster;
     #controls;
     #pointer = new Vector2();
-    #isRotating = false;
     #planetRadius = 0.5;
 
     /**
@@ -53,7 +52,8 @@ export class PlanetKeeper {
         this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight);
         this.#canvasContainerElement.appendChild(this.#renderer.domElement);
         this.#camera = new PerspectiveCamera(30, this.#canvasContainerElement.clientWidth / this.#canvasContainerElement.clientHeight);
-        this.#camera.position.z = 3;
+        this.#camera.position.x = -0.78;
+        this.#camera.position.z = -2.84;
         this.#camera.lookAt(this.#scene.position);
         this.#rayCaster = new Raycaster();
 
@@ -71,13 +71,9 @@ export class PlanetKeeper {
         window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
     }
 
-    enableRotation() {
-        this.#isRotating = true;
-    }
-
     enableClickOnImages() {
         this.#canvasContainerElement.addEventListener('pointerdown', (event) => {
-            this.#isRotating = false;
+            if(this.#controls) this.#controls.autoRotate = false;
             const {top, left, width, height} = this.#renderer.domElement.getBoundingClientRect();
             this.#pointer.x = -1 + 2 * (event.clientX - left) / width;
 	        this.#pointer.y = 1 - 2 * (event.clientY - top) / height;
@@ -92,13 +88,38 @@ export class PlanetKeeper {
     enableControls() {
         this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
         this.#controls.enableZoom = false;
+        this.#controls.autoRotate = true;
+    }
+
+    /**
+    * Randomly place stars on a sphere around the planet
+    * Sphere with center in the origin equation: x2 + y2 + z2 = r2
+    */
+    enableStars() {
+        const starGeometry = new SphereGeometry(0.05, 4, 4);
+        const starMaterial = new MeshBasicMaterial();
+        const rStarsSphere = 32;
+
+        for(let i = 0; i < 250; i++) {
+            const star = new Mesh(starGeometry, starMaterial);
+            const randomX = Math.sqrt(Math.random() * (rStarsSphere * rStarsSphere));
+            const randomY = Math.sqrt(Math.random() * (rStarsSphere * rStarsSphere - randomX * randomX));
+            const randomZ = Math.sqrt(Math.random() * (rStarsSphere * rStarsSphere - (randomX * randomX + randomY * randomY)));
+            star.position.x = Math.random() > 0.5 ? randomX : -randomX;
+            star.position.y = Math.random() > 0.5 ? randomY : -randomY;
+            star.position.z = Math.random() > 0.5 ? randomZ : -randomZ;
+            this.#scene.add(star);
+        }
     }
 
     start() {
         const animate = () => {
-            if(this.#isRotating) this.#planet.rotateOnWorldAxis(yAxisVector, EARTH_ROTATION_ANGLE_RADIANS);
-            if(this.#controls) this.#alignLightPosition();
-            this.#alignImagesOrientation();
+            if(this.#controls) {
+                if(this.#controls.autoRotate) this.#controls.update();
+                this.#alignLightPosition();
+                this.#alignImagesOrientation();
+            }
+
             this.#renderer.render(this.#scene, this.#camera);
             requestAnimationFrame(animate);
         }
