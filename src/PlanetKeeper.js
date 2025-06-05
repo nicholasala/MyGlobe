@@ -2,7 +2,6 @@ import {
     Color,
     Mesh,
     MeshBasicMaterial,
-    MeshLambertMaterial,
     MeshPhongMaterial,
     PerspectiveCamera,
     PlaneGeometry,
@@ -143,7 +142,7 @@ export class PlanetKeeper {
     * @param {Function} onClick - on click callback
     */
     addImageOnPlanet(image, onClick) {
-        const material = new MeshLambertMaterial({map: new TextureLoader().load(image.url)});
+        const material = new MeshBasicMaterial({map: new TextureLoader().load(image.url)});
         const planeSize = this.#getPlaneSize(image);
         const geometry = new PlaneGeometry(planeSize.width, planeSize.height);
         const mesh = new Mesh(geometry, material);
