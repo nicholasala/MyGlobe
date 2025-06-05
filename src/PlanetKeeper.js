@@ -12,7 +12,6 @@ import {
     SphereGeometry,
     TextureLoader,
     Vector2,
-    Vector3,
     WebGLRenderer
 } from 'three';
 import {
@@ -22,8 +21,6 @@ import {
     IMAGES_Y_OFFSET
 } from './constants';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-
-const yAxisVector = new Vector3(0, 1, 0);
 
 export class PlanetKeeper {
     #scene;
@@ -93,18 +90,19 @@ export class PlanetKeeper {
 
     /**
     * Randomly place stars on a sphere around the planet
+    * @param {number} starsCount - number of stars to place
+    * @param {number} starsDistance - radius of the sphere, positioned around the planet, where the stars will be placed
     * Sphere with center in the origin equation: x2 + y2 + z2 = r2
     */
-    enableStars() {
+    addStars(starsCount, starsDistance) {
         const starGeometry = new SphereGeometry(0.05, 4, 4);
         const starMaterial = new MeshBasicMaterial();
-        const rStarsSphere = 32;
 
-        for(let i = 0; i < 250; i++) {
+        for(let i = 0; i < starsCount; i++) {
             const star = new Mesh(starGeometry, starMaterial);
-            const randomX = Math.sqrt(Math.random() * (rStarsSphere * rStarsSphere));
-            const randomY = Math.sqrt(Math.random() * (rStarsSphere * rStarsSphere - randomX * randomX));
-            const randomZ = Math.sqrt(Math.random() * (rStarsSphere * rStarsSphere - (randomX * randomX + randomY * randomY)));
+            const randomX = Math.sqrt(Math.random() * (starsDistance * starsDistance));
+            const randomY = Math.sqrt(Math.random() * (starsDistance * starsDistance - randomX * randomX));
+            const randomZ = Math.sqrt(Math.random() * (starsDistance * starsDistance - (randomX * randomX + randomY * randomY)));
             star.position.x = Math.random() > 0.5 ? randomX : -randomX;
             star.position.y = Math.random() > 0.5 ? randomY : -randomY;
             star.position.z = Math.random() > 0.5 ? randomZ : -randomZ;

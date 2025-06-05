@@ -5,6 +5,7 @@ export class ImageDTO{
     lat;
     lon;
     nation;
+    description;
 
     constructor(image) {
         this.width = image.width;
@@ -13,5 +14,6 @@ export class ImageDTO{
         this.lat = image.lat;
         this.lon = image.lon;
         this.nation = image.nation;
+        this.description = image.description;
     }
 }

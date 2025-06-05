@@ -194,6 +194,12 @@ footer {
     cursor: pointer;
 }
 
+.popup-description {
+    padding-top: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    display: none;
+}
+
 .buttons-container {
     width: 100%;
     display: flex;
