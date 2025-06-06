@@ -11,13 +11,16 @@ import {
     SphereGeometry,
     TextureLoader,
     Vector2,
+    Vector3,
     WebGLRenderer
 } from 'three';
 import {
     LIGHT_COLOR,
     MESH_COLOR,
     POINT_LIGHT_INTENSITY,
-    IMAGES_Y_OFFSET
+    IMAGES_Y_OFFSET,
+    MIN_CAMERA_DISTANCE,
+    MAX_CAMERA_DISTANCE
 } from './constants';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -27,7 +30,6 @@ export class PlanetKeeper {
     #renderer;
     #camera;
     #planet;
-    #pointLight;
     #rayCaster;
     #controls;
     #pointer = new Vector2();
@@ -59,9 +61,25 @@ export class PlanetKeeper {
         this.#planet = new Mesh(earthGeometry, earthMaterial);
         this.#scene.add(this.#planet);
 
-        //Light
-        this.#pointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        this.#scene.add(this.#pointLight);
+        //Lights
+        const firstPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        const secondPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        const thirdPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        const fourthPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        const fifthPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        const sixthPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
+        firstPointLight.position.set(-3, 0, 0);
+        secondPointLight.position.set(3, 0, 0);
+        thirdPointLight.position.set(0, -3, 0);
+        fourthPointLight.position.set(0, 3, 0);
+        fifthPointLight.position.set(0, 0, -3);
+        sixthPointLight.position.set(0, 0, 3);
+        this.#scene.add(firstPointLight);
+        this.#scene.add(secondPointLight);
+        this.#scene.add(thirdPointLight);
+        this.#scene.add(fourthPointLight);
+        this.#scene.add(fifthPointLight);
+        this.#scene.add(sixthPointLight);
 
         //Window resize event
         window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
@@ -83,8 +101,9 @@ export class PlanetKeeper {
 
     enableControls() {
         this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
-        this.#controls.enableZoom = false;
         this.#controls.autoRotate = true;
+        this.#controls.minDistance = MIN_CAMERA_DISTANCE;
+        this.#controls.maxDistance = MAX_CAMERA_DISTANCE;
     }
 
     /**
@@ -113,7 +132,6 @@ export class PlanetKeeper {
         const animate = () => {
             if(this.#controls) {
                 if(this.#controls.autoRotate) this.#controls.update();
-                this.#alignLightPosition();
                 this.#alignImagesOrientation();
             }
 
@@ -187,13 +205,6 @@ export class PlanetKeeper {
         this.#planet.children.forEach(image => {
             image.lookAt(this.#camera.position);
         });
-    }
-
-    /**
-     * Set the position of the light as the position of the camera
-     */
-    #alignLightPosition() {
-        this.#pointLight.position.copy(this.#camera.position);
     }
 
     /**
