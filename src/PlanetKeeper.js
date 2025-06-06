@@ -1,4 +1,5 @@
 import {
+    AmbientLight,
     Color,
     Mesh,
     MeshBasicMaterial,
@@ -17,7 +18,7 @@ import {
 import {
     LIGHT_COLOR,
     MESH_COLOR,
-    POINT_LIGHT_INTENSITY,
+    AMBIENT_LIGHT_INTENSITY,
     IMAGES_Y_OFFSET,
     MIN_CAMERA_DISTANCE,
     MAX_CAMERA_DISTANCE
@@ -61,25 +62,8 @@ export class PlanetKeeper {
         this.#planet = new Mesh(earthGeometry, earthMaterial);
         this.#scene.add(this.#planet);
 
-        //Lights
-        const firstPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        const secondPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        const thirdPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        const fourthPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        const fifthPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        const sixthPointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_INTENSITY);
-        firstPointLight.position.set(-3, 0, 0);
-        secondPointLight.position.set(3, 0, 0);
-        thirdPointLight.position.set(0, -3, 0);
-        fourthPointLight.position.set(0, 3, 0);
-        fifthPointLight.position.set(0, 0, -3);
-        sixthPointLight.position.set(0, 0, 3);
-        this.#scene.add(firstPointLight);
-        this.#scene.add(secondPointLight);
-        this.#scene.add(thirdPointLight);
-        this.#scene.add(fourthPointLight);
-        this.#scene.add(fifthPointLight);
-        this.#scene.add(sixthPointLight);
+        //Light
+        this.#scene.add(new AmbientLight(LIGHT_COLOR, AMBIENT_LIGHT_INTENSITY));
 
         //Window resize event
         window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
