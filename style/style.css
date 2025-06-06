@@ -7,7 +7,6 @@ body {
     background-color: var(--primary-color);
     overflow-y: hidden;
     overflow-x: hidden;
-    flex-direction: column;
 }
 
 header {
@@ -50,6 +49,7 @@ header {
     font-weight: bold;
     margin: 0;
     border-bottom: 1px solid white;
+    cursor: pointer;
 }
 
 /* https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
@@ -136,30 +136,38 @@ footer {
 
 .popup-container {
     position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     display: none;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
+    flex-direction: column;
 }
 
 .popup-mask {
     position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     background-color: var(--primary-color);
-    opacity: 0.4;
+    opacity: 0.6;
 }
 
 .popup {
-    width: 20rem;
-    max-height: 75%;
-    opacity: 1;
-    position: fixed;
+    height: auto;
+    width: auto;
+    max-height: 40rem;
+    max-width: 30rem;
+    font-family: 'Courier New', Courier, monospace;
     background-color: white;
-    border-radius: 6px;
+    position: fixed;
     padding: 1rem;
     overflow-y: scroll;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 .appear-animation {
@@ -183,14 +191,15 @@ footer {
 .popup-image {
     width: 100%;
     height: auto;
+    max-height: 30rem;
 }
 
 .close-icon {
     width: 2rem;
     height: 2rem;
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: 1rem;
+    right: 1rem;
     cursor: pointer;
 }
 
@@ -203,7 +212,7 @@ footer {
 .buttons-container {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
 }
 
@@ -225,4 +234,15 @@ footer {
     cursor: pointer;
     border: 2px solid var(--primary-color);
     box-shadow: var(--primary-color) 0px 4px 8px;
+}
+
+@media (width >= 40rem) {
+    .popup-container {
+        justify-content: center;
+    }
+
+    .popup {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+    }
 }

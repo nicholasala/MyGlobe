@@ -1,9 +1,23 @@
 import { ImageDTO } from './model/ImageDTO';
 import { PlanetKeeper } from './PlanetKeeper';
 
+const popupAnimationDuration = 800;
+
 function hideLoader() {
     const loaderContainer = document.getElementById('loaderContainer');
     loaderContainer.style.display = 'none';
+}
+
+function showProjectDescriptionPopup() {
+    const popupContainer = document.getElementById('descriptionPopupContainer');
+    popupContainer.style.display = 'flex';
+    popupContainer.classList.add('appear-animation');
+    setTimeout(() => popupContainer.classList.remove('appear-animation'), popupAnimationDuration);
+}
+
+function hideProjectDescriptionPopup() {
+    const popupContainer = document.getElementById('descriptionPopupContainer');
+    popupContainer.style.display = 'none';
 }
 
 function showImagePopup(image) {
@@ -31,7 +45,7 @@ function showImagePopup(image) {
 
     popupContainer.style.display = 'flex';
     popupContainer.classList.add('appear-animation');
-    setTimeout(() => popupContainer.classList.remove('appear-animation'), 800);
+    setTimeout(() => popupContainer.classList.remove('appear-animation'), popupAnimationDuration);
 }
 
 function hideImagePopup() {
@@ -50,15 +64,28 @@ function disableCanvasSelection(containerId) {
         container.children[0].classList.add('not-selectable');
 }
 
+function prepareDomEvents() {
+    const headerSubtitle = document.getElementById('headerSubtitle');
+    const closePopupIcon = document.getElementById('closeIcon');
+    const closeProjectDescriptionIcon = document.getElementById('closeProjectDescriptionIcon');
+
+    if(headerSubtitle) headerSubtitle.addEventListener('click', showProjectDescriptionPopup);
+    if(closePopupIcon) closePopupIcon.addEventListener('click', hideImagePopup);
+    if(closeProjectDescriptionIcon) closeProjectDescriptionIcon.addEventListener('click', hideProjectDescriptionPopup);
+}
+
 window.onload = () => {
     fetch('/my-globe-config.json')
         .then(res => res.json())
         .then(config => {
+            if(config.primaryColor) document.documentElement.style.setProperty('--primary-color', config.primaryColor);
+
             const planetKeeper = new PlanetKeeper();
             planetKeeper.createPlanet(config.canvasContainerId, Number(config.sceneBackgroundColor), config.texture);
             planetKeeper.start();
-            if(config.primaryColor) document.documentElement.style.setProperty('--primary-color', config.primaryColor)
             disableCanvasSelection(config.canvasContainerId);
+            prepareDomEvents();
+
 
             setTimeout(() => {
                 const images = config.images.map(image => new ImageDTO(image));
@@ -71,9 +98,6 @@ window.onload = () => {
                     planetKeeper.enableControls();
                     hideLoader();
                 });
-
-                const closePopupIcon = document.getElementById('closeIcon');
-                closePopupIcon.addEventListener('click', hideImagePopup);
             }, 2000); 
         });
 };

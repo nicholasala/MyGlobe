@@ -11,28 +11,48 @@
         <div class="header-content">
             <img class="sign" src="/demo/sign-carla.jpg"></img>
             <span class="header-title">Viento Mosse</span>
-            <span class="header-subtitle">World Painting Project</span>
+            <span id="headerSubtitle" class="header-subtitle">World Painting Project</span>
         </div>
     </header>
     <div class="main-section">
         <div id="loaderContainer" class="loader-container">
             <div class="loader"></div>
         </div>
-        <div id="popupContainer" class="popup-container">
-            <div class="popup-mask"></div>
-            <div class="popup">
-                <h1 id="popupTitle" class="popup-title"></h1>
-                <div id="closeIcon" class="close-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </div>
-                <img id="popupImage" class="popup-image"></img>
-                <div id="popupDescription" class="popup-description"></div>
-                <div id="buttonsContainer" class="buttons-container"></div>
+        <div id="canvasContainer" class="canvas-container not-selectable"></div>
+    </div>
+    <div id="popupContainer" class="popup-container">
+        <div class="popup-mask"></div>
+        <div id="imagePopup" class="popup">
+            <h1 id="popupTitle" class="popup-title"></h1>
+            <div id="closeIcon" class="close-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </div>
+            <img id="popupImage" class="popup-image"></img>
+            <div id="popupDescription" class="popup-description"></div>
+            <div id="buttonsContainer" class="buttons-container"></div>
+        </div>
+    </div>
+    <div id="descriptionPopupContainer" class="popup-container">
+        <div class="popup-mask"></div>
+        <div id="projectDescriptionPopup" class="popup">
+            <div id="closeProjectDescriptionIcon" class="close-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </div>
+            <h1 class="popup-title">World Painting Project</h1>
+            <p>
+                Painting outdoors (Plein Air) in every country in the world with easel, brushes, and canvas. 
+                A dream, a great goal in progress. 
+                A project that needs your support and collaboration to make it possible - 
+                you will be part of something truly big that will inspire others to follow their dreams.
+            </p>
+            <div class="buttons-container">
+                <a class="popup-button-link" href=""><div class="popup-button">Support</div></a>
             </div>
         </div>
-        <div id="canvasContainer" class="canvas-container not-selectable"></div>
     </div>
     <footer>
         <div class="open-gallery-button">Open Gallery</div>
