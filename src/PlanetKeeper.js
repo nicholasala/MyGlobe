@@ -19,10 +19,13 @@ import {
     IMAGES_Y_OFFSET,
     MIN_CAMERA_DISTANCE,
     MAX_CAMERA_DISTANCE,
-    POINT_LIGHT_MAX_INTENSITY,
+    MAX_POINT_LIGHT_INTENSITY,
     ZOOM_TRIGGER_DISTANCE,
     LIGHT_CHANGE_FACTOR,
-    POINT_LIGHT_MIN_INTENSITY
+    MIN_POINT_LIGHT_INTENSITY,
+    MAX_IMAGE_SIZE,
+    MIN_IMAGE_SIZE,
+    IMAGE_SIZE_CHANGE_FACTOR
 } from './constants';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -66,7 +69,7 @@ export class PlanetKeeper {
         this.#scene.add(this.#planet);
 
         //Light
-        this.#pointLight = new PointLight(LIGHT_COLOR, POINT_LIGHT_MAX_INTENSITY);
+        this.#pointLight = new PointLight(LIGHT_COLOR, MAX_POINT_LIGHT_INTENSITY);
         this.#scene.add(this.#pointLight);
 
         //Window resize event
@@ -212,10 +215,23 @@ export class PlanetKeeper {
         this.#pointLight.position.copy(this.#camera.position);
     }
 
+    /**
+    * Adjust the scene (light intensity, images size, images position) on zoom
+    * @param {number} distance - distance of the camera from the scene
+    */
     #onZoom(distance) {
         let zoomPosition = Math.trunc((distance - MIN_CAMERA_DISTANCE) / ZOOM_TRIGGER_DISTANCE);
         if(zoomPosition < 0) zoomPosition = 0;
-        this.#pointLight.intensity = POINT_LIGHT_MIN_INTENSITY + (LIGHT_CHANGE_FACTOR * zoomPosition);
+
+        this.#pointLight.intensity = MIN_POINT_LIGHT_INTENSITY + (LIGHT_CHANGE_FACTOR * zoomPosition);
+        const actualImageMaxSize = MIN_IMAGE_SIZE + (IMAGE_SIZE_CHANGE_FACTOR * zoomPosition);
+        const imageScale = ((actualImageMaxSize * 100) / MAX_IMAGE_SIZE) / 100;
+
+        this.#planet.children.forEach(image => {
+            image.scale.x = imageScale;
+            image.scale.y = imageScale;
+            image.scale.z = imageScale;
+        });
     }
 
     /**
@@ -223,17 +239,15 @@ export class PlanetKeeper {
     * @param {ImageDTO} image - image object
     */
     #getPlaneSize(image) {
-        const maxSize = 0.15;
-
         if(image.height >= image.width) {
             return {
-                height: maxSize,
-                width: maxSize * (((image.width * 100) / image.height) / 100)
+                height: MAX_IMAGE_SIZE,
+                width: MAX_IMAGE_SIZE * (((image.width * 100) / image.height) / 100)
             }
         } else {
             return {
-                height: maxSize * (((image.height * 100) / image.width) / 100),
-                width: maxSize
+                height: MAX_IMAGE_SIZE * (((image.height * 100) / image.width) / 100),
+                width: MAX_IMAGE_SIZE
             }
         }
     }
