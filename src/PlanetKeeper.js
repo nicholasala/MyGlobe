@@ -16,7 +16,7 @@ import {
 import {
     LIGHT_COLOR,
     MESH_COLOR,
-    IMAGES_Y_OFFSET,
+    IMAGES_SPHERE_RADIUS_OFFSET,
     MIN_CAMERA_DISTANCE,
     MAX_CAMERA_DISTANCE,
     MAX_POINT_LIGHT_INTENSITY,
@@ -166,7 +166,9 @@ export class PlanetKeeper {
         const geometry = new PlaneGeometry(planeSize.width, planeSize.height);
         const mesh = new Mesh(geometry, material);
         mesh.onClick = onClick;
-        this.#placeImageOnPlanet(mesh, image.lat, image.lon, this.#planetRadius);
+        mesh.lat = image.lat;
+        mesh.lon = image.lon;
+        this.#placeImageOnPlanet(mesh, image.lat, image.lon);
         this.#planet.add(mesh);
     }
 
@@ -175,28 +177,18 @@ export class PlanetKeeper {
      * @param {Object3D} image - the image to place
      * @param {number} lat - latitude of the location
      * @param {number} lon - longitude of the location
-     * @param {number} radius - radius of the planet
      * source: https://stackoverflow.com/questions/46017167/how-to-place-marker-with-lat-lon-on-3d-globe-three-js
      */
-    #placeImageOnPlanet(image, lat, lon, radius) {
+    #placeImageOnPlanet(image, lat, lon) {
         const latRad = lat * (Math.PI / 180);
         const lonRad = -lon * (Math.PI / 180);
+        const radius = this.#planetRadius + IMAGES_SPHERE_RADIUS_OFFSET;
 
         image.position.set(
             Math.cos(latRad) * Math.cos(lonRad) * radius,
-            Math.sin(latRad) * radius + this.#getImageYOffset(lat),
+            Math.sin(latRad) * radius,
             Math.cos(latRad) * Math.sin(lonRad) * radius
         );
-    }
-
-    /**
-     * Get the y offset of an image in order to make it completely visible (outside the sphere)
-     * @param {number} lat - latitude of the image
-     */
-    #getImageYOffset(lat) {
-        const signFactor = lat >= 0 ? 1 : -1;
-        const offsetFactor = Math.abs(lat) > 30 ? 1 : Math.abs(lat) > 10 ? 1.5 : 2;
-        return IMAGES_Y_OFFSET * offsetFactor * signFactor;
     }
 
     /**

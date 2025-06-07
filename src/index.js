@@ -98,6 +98,6 @@ window.onload = () => {
                     planetKeeper.enableControls();
                     hideLoader();
                 });
-            }, 1000); 
+            }, 400); 
         });
 };
