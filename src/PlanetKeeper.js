@@ -16,7 +16,7 @@ import {
 import {
     LIGHT_COLOR,
     MESH_COLOR,
-    IMAGES_SPHERE_RADIUS_OFFSET,
+    MAX_IMAGES_SPHERE_RADIUS_OFFSET,
     MIN_CAMERA_DISTANCE,
     MAX_CAMERA_DISTANCE,
     MAX_POINT_LIGHT_INTENSITY,
@@ -25,7 +25,9 @@ import {
     MIN_POINT_LIGHT_INTENSITY,
     MAX_IMAGE_SIZE,
     MIN_IMAGE_SIZE,
-    IMAGE_SIZE_CHANGE_FACTOR
+    IMAGE_SIZE_CHANGE_FACTOR,
+    MIN_IMAGES_SPHERE_RADIUS_OFFSET,
+    IMAGES_SPHERE_RADIUS_CHANGE_FACTOR
 } from './constants';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -168,7 +170,7 @@ export class PlanetKeeper {
         mesh.onClick = onClick;
         mesh.lat = image.lat;
         mesh.lon = image.lon;
-        this.#placeImageOnPlanet(mesh, image.lat, image.lon);
+        this.#placeImageOnPlanet(mesh, image.lat, image.lon, MAX_IMAGES_SPHERE_RADIUS_OFFSET);
         this.#planet.add(mesh);
     }
 
@@ -177,12 +179,13 @@ export class PlanetKeeper {
      * @param {Object3D} image - the image to place
      * @param {number} lat - latitude of the location
      * @param {number} lon - longitude of the location
+     * @param {number} radiusOffset - the sphere radius offset considering the planet radius and the radius of the sphere where the images are placed
      * source: https://stackoverflow.com/questions/46017167/how-to-place-marker-with-lat-lon-on-3d-globe-three-js
      */
-    #placeImageOnPlanet(image, lat, lon) {
+    #placeImageOnPlanet(image, lat, lon, radiusOffset) {
         const latRad = lat * (Math.PI / 180);
         const lonRad = -lon * (Math.PI / 180);
-        const radius = this.#planetRadius + IMAGES_SPHERE_RADIUS_OFFSET;
+        const radius = this.#planetRadius + radiusOffset;
 
         image.position.set(
             Math.cos(latRad) * Math.cos(lonRad) * radius,
@@ -218,11 +221,13 @@ export class PlanetKeeper {
         this.#pointLight.intensity = MIN_POINT_LIGHT_INTENSITY + (LIGHT_CHANGE_FACTOR * zoomPosition);
         const actualImageMaxSize = MIN_IMAGE_SIZE + (IMAGE_SIZE_CHANGE_FACTOR * zoomPosition);
         const imageScale = ((actualImageMaxSize * 100) / MAX_IMAGE_SIZE) / 100;
+        const imageSphereRadiusOffset = MIN_IMAGES_SPHERE_RADIUS_OFFSET + (IMAGES_SPHERE_RADIUS_CHANGE_FACTOR * zoomPosition);
 
         this.#planet.children.forEach(image => {
             image.scale.x = imageScale;
             image.scale.y = imageScale;
             image.scale.z = imageScale;
+            this.#placeImageOnPlanet(image, image.lat, image.lon, imageSphereRadiusOffset);
         });
     }
 
