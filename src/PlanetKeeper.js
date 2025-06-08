@@ -19,15 +19,15 @@ import {
     MAX_IMAGES_SPHERE_RADIUS_OFFSET,
     MIN_CAMERA_DISTANCE,
     MAX_CAMERA_DISTANCE,
-    MAX_POINT_LIGHT_INTENSITY,
     ZOOM_TRIGGER_DISTANCE,
-    LIGHT_CHANGE_FACTOR,
-    MIN_POINT_LIGHT_INTENSITY,
     MAX_IMAGE_SIZE,
     MIN_IMAGE_SIZE,
     IMAGE_SIZE_CHANGE_FACTOR,
     MIN_IMAGES_SPHERE_RADIUS_OFFSET,
-    IMAGES_SPHERE_RADIUS_CHANGE_FACTOR
+    IMAGES_SPHERE_RADIUS_CHANGE_FACTOR,
+    MIN_POINT_LIGHT_INTENSITY,
+    LIGHT_CHANGE_FACTOR,
+    MAX_POINT_LIGHT_INTENSITY
 } from './constants';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -74,6 +74,7 @@ export class PlanetKeeper {
 
         //Light
         this.#pointLight = new PointLight(LIGHT_COLOR, MAX_POINT_LIGHT_INTENSITY);
+        this.#pointLight.position.copy(this.#camera.position);
         this.#scene.add(this.#pointLight);
 
         //Window resize event
@@ -213,7 +214,7 @@ export class PlanetKeeper {
     }
 
     /**
-     * Set the position of the light as the position of the camera
+     * Align the position of the light with the position of the camera
      */
     #alignLightPosition() {
         this.#pointLight.position.copy(this.#camera.position);
@@ -221,15 +222,14 @@ export class PlanetKeeper {
 
     /**
     * Adjust the scene (light intensity, images size, images position) on zoom
-    * @param {number} distance - distance of the camera from the scene
+    * @param {number} cameraDistance - distance of the camera from the scene
     */
-    #onZoom(distance) {
-        let zoomPosition = Math.trunc((distance - MIN_CAMERA_DISTANCE) / ZOOM_TRIGGER_DISTANCE);
+    #onZoom(cameraDistance) {
+        let zoomPosition = Math.trunc((cameraDistance - MIN_CAMERA_DISTANCE) / ZOOM_TRIGGER_DISTANCE);
         if(zoomPosition < 0) zoomPosition = 0;
 
-
-        //TODO se spostiamo la luce su una retta passante per posizione scena e camera non sará necessario ridurre l'intensitá
         this.#pointLight.intensity = MIN_POINT_LIGHT_INTENSITY + (LIGHT_CHANGE_FACTOR * zoomPosition);
+        console.log(this.#pointLight.intensity);
         const actualImageMaxSize = MIN_IMAGE_SIZE + (IMAGE_SIZE_CHANGE_FACTOR * zoomPosition);
         const imageScale = ((actualImageMaxSize * 100) / MAX_IMAGE_SIZE) / 100;
         const imageSphereRadiusOffset = MIN_IMAGES_SPHERE_RADIUS_OFFSET + (IMAGES_SPHERE_RADIUS_CHANGE_FACTOR * zoomPosition);
