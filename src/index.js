@@ -94,7 +94,9 @@ function prepareDomEvents() {
 }
 
 window.onload = () => {
-    fetch('/my-globe-config.json')
+    const configPath = document.body.dataset.myGlobeConfig ? document.body.dataset.myGlobeConfig : '/my-globe-config.json';
+
+    fetch(configPath)
         .then(res => res.json())
         .then(config => {
             if(config.primaryColor) document.documentElement.style.setProperty('--primary-color', config.primaryColor);
