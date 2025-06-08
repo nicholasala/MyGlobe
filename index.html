@@ -29,7 +29,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </div>
-            <img id="popupImage" class="popup-image"></img>
+            <div id="popupImageContainer" class="popup-image-container">
+                <div id="popupImageLoaderContainer" class="popup-image-loader-container">
+                    <div class="popup-image-loader"></div>
+                </div>
+            </div>
             <div id="popupDescription" class="popup-description"></div>
             <div id="buttonsContainer" class="buttons-container"></div>
         </div>
@@ -50,7 +54,13 @@
                 you will be part of something truly big that will inspire others to follow their dreams.
             </p>
             <div class="buttons-container">
-                <a class="popup-button-link" href=""><div class="popup-button">Support</div></a>
+                <div id="supportButton" class="popup-button">Support</div>
+                <a id="paypalButton" class="popup-button-link" href="https://www.paypal.me/vientomosse" style="display: none;">
+                    <div class="popup-button">Paypal</div>
+                </a>
+                <a id="wiseButton" class="popup-button-link" href="https://wise.com/pay/me/carlaromeromosser" style="display: none;">
+                    <div class="popup-button">Wise</div>
+                </a>
             </div>
         </div>
     </div>

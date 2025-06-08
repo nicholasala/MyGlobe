@@ -1,5 +1,6 @@
 :root {
   --primary-color: #040223;
+  --loader-size: 3rem;
 }
 
 body {
@@ -15,7 +16,8 @@ header {
     display: flex;
     justify-content: center;
     color: white;
-    padding-top: 6px;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 .header-content {
@@ -79,6 +81,7 @@ header {
 
 footer {
     height: 6rem;
+    padding-top: 0.5rem;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -115,8 +118,8 @@ footer {
 }
 
 .loader {
-    width: 48px;
-    height: 48px;
+    width: var(--loader-size);
+    height: var(--loader-size);
     border: 5px solid white;
     border-bottom-color: transparent;
     border-radius: 50%;
@@ -159,7 +162,7 @@ footer {
 .popup {
     height: auto;
     width: auto;
-    max-height: 40rem;
+    max-height: 80%;
     max-width: 30rem;
     font-family: 'Courier New', Courier, monospace;
     background-color: white;
@@ -186,12 +189,39 @@ footer {
 .popup-title {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
+    text-align: center;
 }
 
-.popup-image {
+.popup-image-container {
+    height: 22rem;
     width: 100%;
-    height: auto;
-    max-height: 30rem;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+
+.popup-image-loader-container {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-image-loader {
+    width: var(--loader-size);
+    height: var(--loader-size);
+    border: 5px solid var(--primary-color);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
 }
 
 .close-icon {
@@ -242,7 +272,6 @@ footer {
     }
 
     .popup {
-        max-height: 43rem;
         border-bottom-left-radius: 1rem;
         border-bottom-right-radius: 1rem;
     }

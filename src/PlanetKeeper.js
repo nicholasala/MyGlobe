@@ -38,6 +38,7 @@ export class PlanetKeeper {
     #camera;
     #planet;
     #rayCaster;
+    #textureLoader;
     #controls;
     #pointLight;
     #pointer = new Vector2();
@@ -63,10 +64,11 @@ export class PlanetKeeper {
         this.#camera.position.z = -2.84;
         this.#camera.lookAt(this.#scene.position);
         this.#rayCaster = new Raycaster();
+        this.#textureLoader = new TextureLoader();
 
         //Planet
         const earthGeometry = new SphereGeometry(this.#planetRadius, 32, 32);
-        const earthMaterial = new MeshPhongMaterial({color: MESH_COLOR, map: new TextureLoader().load(textureAddress)});
+        const earthMaterial = new MeshPhongMaterial({color: MESH_COLOR, map: this.#textureLoader.load(textureAddress)});
         this.#planet = new Mesh(earthGeometry, earthMaterial);
         this.#scene.add(this.#planet);
 
@@ -94,18 +96,13 @@ export class PlanetKeeper {
 
     enableControls() {
         this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
-        this.#controls.autoRotate = true;
         this.#controls.minDistance = MIN_CAMERA_DISTANCE;
         this.#controls.maxDistance = MAX_CAMERA_DISTANCE;
+        this.#controls.addEventListener('change', () => this.#onCameraChange());
+    }
 
-        this.#controls.addEventListener('change', () => {
-            const cameraDistance = this.#camera.position.distanceTo(this.#controls.target);
-
-            if(Math.abs(cameraDistance - this.#previousCameraDistance) >= ZOOM_TRIGGER_DISTANCE) {
-                this.#onZoom(cameraDistance);
-                this.#previousCameraDistance = cameraDistance;
-            }
-        });
+    enableRotation() {
+        if(this.#controls) this.#controls.autoRotate = true;
     }
 
     /**
@@ -130,21 +127,6 @@ export class PlanetKeeper {
         }
     }
 
-    start() {
-        const animate = () => {
-            if(this.#controls) {
-                if(this.#controls.autoRotate) this.#controls.update();
-                this.#alignImagesOrientation();
-                this.#alignLightPosition();
-            }
-
-            this.#renderer.render(this.#scene, this.#camera);
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-    }
-
     /**
     * Add a list of images on the planet
     * @param {ImageDTO[]} images - image object
@@ -163,7 +145,7 @@ export class PlanetKeeper {
     * @param {Function} onClick - on click callback
     */
     addImageOnPlanet(image, onClick) {
-        const material = new MeshBasicMaterial({map: new TextureLoader().load(image.url)});
+        const material = new MeshBasicMaterial({map: this.#textureLoader.load(image.min)});
         const planeSize = this.#getPlaneSize(image);
         const geometry = new PlaneGeometry(planeSize.width, planeSize.height);
         const mesh = new Mesh(geometry, material);
@@ -172,6 +154,19 @@ export class PlanetKeeper {
         mesh.lon = image.lon;
         this.#placeImageOnPlanet(mesh, image.lat, image.lon, MAX_IMAGES_SPHERE_RADIUS_OFFSET);
         this.#planet.add(mesh);
+    }
+
+    /**
+     * Start the scene animation
+     */
+    start() {
+        const animate = () => {
+            if(this.#controls && this.#controls.autoRotate) this.#controls.update();
+            this.#renderer.render(this.#scene, this.#camera);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
     }
 
     /**
@@ -192,6 +187,20 @@ export class PlanetKeeper {
             Math.sin(latRad) * radius,
             Math.cos(latRad) * Math.sin(lonRad) * radius
         );
+    }
+
+    /**
+     * Update the scene when the camera is moved
+     */
+    #onCameraChange() {
+        this.#alignImagesOrientation();
+        this.#alignLightPosition();
+        const cameraDistance = this.#camera.position.distanceTo(this.#controls.target);
+
+        if(Math.abs(cameraDistance - this.#previousCameraDistance) >= ZOOM_TRIGGER_DISTANCE) {
+            this.#onZoom(cameraDistance);
+            this.#previousCameraDistance = cameraDistance;
+        }
     }
 
     /**
@@ -218,6 +227,8 @@ export class PlanetKeeper {
         let zoomPosition = Math.trunc((distance - MIN_CAMERA_DISTANCE) / ZOOM_TRIGGER_DISTANCE);
         if(zoomPosition < 0) zoomPosition = 0;
 
+
+        //TODO se spostiamo la luce su una retta passante per posizione scena e camera non sará necessario ridurre l'intensitá
         this.#pointLight.intensity = MIN_POINT_LIGHT_INTENSITY + (LIGHT_CHANGE_FACTOR * zoomPosition);
         const actualImageMaxSize = MIN_IMAGE_SIZE + (IMAGE_SIZE_CHANGE_FACTOR * zoomPosition);
         const imageScale = ((actualImageMaxSize * 100) / MAX_IMAGE_SIZE) / 100;
