@@ -82,17 +82,7 @@ export class PlanetKeeper {
     }
 
     enableClickOnImages() {
-        this.#canvasContainerElement.addEventListener('pointerdown', (event) => {
-            if(this.#controls) this.#controls.autoRotate = false;
-            const {top, left, width, height} = this.#renderer.domElement.getBoundingClientRect();
-            this.#pointer.x = -1 + 2 * (event.clientX - left) / width;
-	        this.#pointer.y = 1 - 2 * (event.clientY - top) / height;
-            this.#rayCaster.setFromCamera(this.#pointer, this.#camera);
-            const intersections = this.#rayCaster.intersectObjects(this.#planet.children);
-
-            if(intersections.length > 0)
-                intersections[0].object.onClick();
-        });
+        this.#canvasContainerElement.addEventListener('pointerdown', (event) => this.#onSceneClick(event));
     }
 
     enableControls() {
@@ -205,6 +195,28 @@ export class PlanetKeeper {
     }
 
     /**
+    * Handle the click in the scene
+    * @param {Event} event - pointer down event
+    */
+    #onSceneClick(event) {
+        if(this.#controls) this.#controls.autoRotate = false;
+        const {top, left, width, height} = this.#renderer.domElement.getBoundingClientRect();
+        this.#pointer.x = -1 + 2 * (event.clientX - left) / width;
+        this.#pointer.y = 1 - 2 * (event.clientY - top) / height;
+        this.#rayCaster.setFromCamera(this.#pointer, this.#camera);
+        const intersections = this.#rayCaster.intersectObjects(this.#planet.children, false);
+
+        if(intersections.length > 0){
+            const planetIntersection = this.#rayCaster.intersectObject(this.#planet, false);
+
+            if(planetIntersection.length > 0 && planetIntersection[0].distance < intersections[0].distance)
+                return;
+
+            intersections[0].object.onClick();
+        }
+    }
+
+    /**
      * Make the images parallel to the camera plane
      */
     #alignImagesOrientation() {
@@ -229,7 +241,6 @@ export class PlanetKeeper {
         if(zoomPosition < 0) zoomPosition = 0;
 
         this.#pointLight.intensity = MIN_POINT_LIGHT_INTENSITY + (LIGHT_CHANGE_FACTOR * zoomPosition);
-        console.log(this.#pointLight.intensity);
         const actualImageMaxSize = MIN_IMAGE_SIZE + (IMAGE_SIZE_CHANGE_FACTOR * zoomPosition);
         const imageScale = ((actualImageMaxSize * 100) / MAX_IMAGE_SIZE) / 100;
         const imageSphereRadiusOffset = MIN_IMAGES_SPHERE_RADIUS_OFFSET + (IMAGES_SPHERE_RADIUS_CHANGE_FACTOR * zoomPosition);
