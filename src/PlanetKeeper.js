@@ -38,7 +38,6 @@ export class PlanetKeeper {
     #camera;
     #planet;
     #rayCaster;
-    #textureLoader;
     #controls;
     #pointLight;
     #pointer = new Vector2();
@@ -64,11 +63,10 @@ export class PlanetKeeper {
         this.#camera.position.z = -2.84;
         this.#camera.lookAt(this.#scene.position);
         this.#rayCaster = new Raycaster();
-        this.#textureLoader = new TextureLoader();
 
         //Planet
         const earthGeometry = new SphereGeometry(this.#planetRadius, 32, 32);
-        const earthMaterial = new MeshPhongMaterial({color: MESH_COLOR, map: this.#textureLoader.load(textureAddress)});
+        const earthMaterial = new MeshPhongMaterial({color: MESH_COLOR, map: new TextureLoader().load(textureAddress)});
         this.#planet = new Mesh(earthGeometry, earthMaterial);
         this.#scene.add(this.#planet);
 
@@ -136,7 +134,7 @@ export class PlanetKeeper {
     * @param {Function} onClick - on click callback
     */
     addImageOnPlanet(image, onClick) {
-        const material = new MeshBasicMaterial({map: this.#textureLoader.load(image.min)});
+        const material = new MeshBasicMaterial({map: new TextureLoader().load(image.min)});
         const planeSize = this.#getPlaneSize(image);
         const geometry = new PlaneGeometry(planeSize.width, planeSize.height);
         const mesh = new Mesh(geometry, material);
