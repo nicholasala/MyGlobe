@@ -12,6 +12,13 @@ So far, the software features achieved are:
 ## Configuration
 The planet can be easily configured using a json file. Here [my-globe-config.json](https://github.com/nicholasala/MyGlobe/blob/main/my-globe-config.json) the structure of the json used.
 
+## Development
+The project dependencies are managed using npm. [Http-server](https://www.npmjs.com/package/http-server) is needed as a global npm dependency. The commands for the development are:
+
+ * `npm install` install project dependencies
+ * `npm run build` build the project in the dist folder
+ * `npm run dev` start the development server on localhost:8080
+
 ## Use case
 As a use case MyGlobe is used to create a representation of the paintings created by [Viento Mosse](https://www.vientomosse.art) in her World Painting Project. The click on the images in this case, shows a popup with the information of the painting. Here some screenshots from the first release of this use case:
 
