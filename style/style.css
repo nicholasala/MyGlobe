@@ -42,6 +42,13 @@ header {
     margin: 0;
 }
 
+.header-subtitle-container {
+    position: relative;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    cursor: pointer;
+}
+
 .header-subtitle {
     width: 100%;
     display: block;
@@ -51,7 +58,14 @@ header {
     font-weight: bold;
     margin: 0;
     border-bottom: 1px solid white;
-    cursor: pointer;
+}
+
+.info-icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 /* https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
@@ -114,27 +128,34 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     background-color: var(--primary-color);
+    opacity: 0.8;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2rem;
 }
 
-.loader {
-    width: var(--loader-size);
-    height: var(--loader-size);
-    border: 5px solid white;
-    border-bottom-color: transparent;
-    border-radius: 50%;
+.loader-container > * {
+    opacity: 1;
+}
+
+.loader-gesture-info {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    line-height: 3rem;
+}
+
+.loader-gesture-icon {
+    height: 3rem;
+    width: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    color: white;
 }
 
 .popup-container {
@@ -211,6 +232,15 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .popup-image-loader {
