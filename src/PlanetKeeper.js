@@ -27,7 +27,8 @@ import {
     IMAGES_SPHERE_RADIUS_CHANGE_FACTOR,
     MIN_POINT_LIGHT_INTENSITY,
     LIGHT_CHANGE_FACTOR,
-    MAX_POINT_LIGHT_INTENSITY
+    MAX_POINT_LIGHT_INTENSITY,
+    POINTER_MOVE_OFFSET_TRIGGER
 } from './constants';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -41,7 +42,9 @@ export class PlanetKeeper {
     #controls;
     #pointLight;
     #pointer = new Vector2();
-    #onPointerMove = () => this.#clearImageClick();
+    #onPointerMove = (event) => this.#onScenePointerMove(event);
+    #prevPointerMoveX;
+    #prevPointerMoveY;
     #onPointerUp = () => this.#onScenePointerUp();
     #imageClickCallback;
     #planetRadius = 0.5;
@@ -214,9 +217,20 @@ export class PlanetKeeper {
                 return;
 
             this.#imageClickCallback = intersections[0].object.onClick;
+            this.#prevPointerMoveX = event.clientX;
+            this.#prevPointerMoveY = event.clientY;
             this.#canvasContainerElement.addEventListener('pointermove', this.#onPointerMove);
             this.#canvasContainerElement.addEventListener('pointerup', this.#onPointerUp);
         }
+    }
+
+    /**
+    * Handle the pointer move event in the scene
+    */
+    #onScenePointerMove(event) {
+        if(Math.abs(this.#prevPointerMoveX - event.clientX) > POINTER_MOVE_OFFSET_TRIGGER ||
+            Math.abs(this.#prevPointerMoveY - event.clientY) > POINTER_MOVE_OFFSET_TRIGGER)
+            this.#clearImageClick();
     }
 
     /**
@@ -228,7 +242,7 @@ export class PlanetKeeper {
     }
 
     /**
-    * Clear the click on the image data
+    * Clear the click on the image callbacks
     */
     #clearImageClick() {
         this.#imageClickCallback = undefined;

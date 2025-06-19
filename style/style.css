@@ -74,6 +74,7 @@ header {
     height: calc(100vh - 16rem);
     height: calc((var(--vh, 1vh) * 100) - 16rem);
     width: 100%;
+    touch-action: none;
 }
 
 .canvas-container {
