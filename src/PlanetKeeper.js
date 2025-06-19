@@ -41,6 +41,9 @@ export class PlanetKeeper {
     #controls;
     #pointLight;
     #pointer = new Vector2();
+    #onPointerMove = () => this.#clearImageClick();
+    #onPointerUp = () => this.#onScenePointerUp();
+    #imageClickCallback;
     #planetRadius = 0.5;
     #previousCameraDistance = MAX_CAMERA_DISTANCE;
 
@@ -80,7 +83,7 @@ export class PlanetKeeper {
     }
 
     enableClickOnImages() {
-        this.#canvasContainerElement.addEventListener('pointerdown', (event) => this.#onSceneClick(event));
+        this.#canvasContainerElement.addEventListener('pointerdown', (event) => this.#onScenePointerDown(event));
     }
 
     enableControls() {
@@ -193,10 +196,10 @@ export class PlanetKeeper {
     }
 
     /**
-    * Handle the click in the scene
+    * Handle the pointer down event in the scene preparing the callback related to an image
     * @param {Event} event - pointer down event
     */
-    #onSceneClick(event) {
+    #onScenePointerDown(event) {
         if(this.#controls) this.#controls.autoRotate = false;
         const {top, left, width, height} = this.#renderer.domElement.getBoundingClientRect();
         this.#pointer.x = -1 + 2 * (event.clientX - left) / width;
@@ -210,8 +213,27 @@ export class PlanetKeeper {
             if(planetIntersection.length > 0 && planetIntersection[0].distance < intersections[0].distance)
                 return;
 
-            intersections[0].object.onClick();
+            this.#imageClickCallback = intersections[0].object.onClick;
+            this.#canvasContainerElement.addEventListener('pointermove', this.#onPointerMove);
+            this.#canvasContainerElement.addEventListener('pointerup', this.#onPointerUp);
         }
+    }
+
+    /**
+    * Handle the pointer up event in the scene calling the callback related to an image if an image was clicked
+    */
+    #onScenePointerUp() {
+        this.#imageClickCallback();
+        this.#clearImageClick();
+    }
+
+    /**
+    * Clear the click on the image data
+    */
+    #clearImageClick() {
+        this.#imageClickCallback = undefined;
+        this.#canvasContainerElement.removeEventListener('pointermove', this.#onPointerMove);
+        this.#canvasContainerElement.removeEventListener('pointerup', this.#onPointerUp);
     }
 
     /**
