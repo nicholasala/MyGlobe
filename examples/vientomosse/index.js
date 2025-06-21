@@ -1,5 +1,5 @@
-import { ImageDTO } from './model/ImageDTO';
-import { PlanetKeeper } from './PlanetKeeper';
+import { ImageDTO } from '../../src/model/ImageDTO';
+import { PlanetKeeper } from '../../src/PlanetKeeper';
 
 const popupAnimationDuration = 800;
 

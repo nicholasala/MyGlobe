@@ -1,0 +1,188 @@
+{
+  "texture": "/planet/texture/earthmap.jpeg",
+  "canvasContainerId": "canvasContainer",
+  "sceneBackgroundColor": "0x040223",
+  "primaryColor": "#040223",
+  "images": [
+    {
+      "nation": "Norway",
+      "width": 1284,
+      "height": 1590,
+      "url": "/planet/img/norway.jpg",
+      "min": "/planet/img/min/norway.jpg",
+      "lat": 67.9587305,
+      "lon": 13.0037751,
+      "description": "Vindstad Dock Lofoten Norway 2025 Acrylic on canvas 80x100cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/vindstad-dock-lofoten-norway2025-2/"},
+        {"text": "Buy Art Print", "url": "/product/vindstad-dock-lofoten-norway2025/"},
+        {"text": "See All", "url": "/product-category/prints/norway_prints/"}
+      ]
+    },
+    {
+      "nation": "New Zealand",
+      "width": 1989,
+      "height": 2531,
+      "url": "/planet/img/newzealand.jpg",
+      "min": "/planet/img/min/newzealand.jpg",
+      "lat": -41.2887953,
+      "lon": 174.7772114,
+      "description": "Wellington marina New Zealand 2024 Acrylic on canvas 40x60cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/new-zealand-wellington-2024-2/"},
+        {"text": "Buy Art Print", "url": "/product/new-zealand-wellington-2024/"},
+        {"text": "See All", "url": "/product-tag/new-zealand/"}
+      ]
+    },
+    {
+      "nation": "The Netherlands",
+      "width": 3166,
+      "height": 1917,
+      "url": "/planet/img/netherlands.jpg",
+      "min": "/planet/img/min/netherlands.jpg",
+      "lat": 52.3730796,
+      "lon": 4.8924534,
+      "description": "Prisengrach Street Amsterdam The Netherlands 2023 Acrylic on canvas 100x160cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/prinsengrach-street-amsterdam-2023-2/"},
+        {"text": "Buy Art Print", "url": "/product/prinsengrach-street-amsterdam-2023/"},
+        {"text": "See All", "url": "/product-tag/the-netherlands/"}
+      ]
+    },
+    {
+      "nation": "Japan",
+      "width": 1970,
+      "height": 2367,
+      "url": "/planet/img/japan.jpg",
+      "min": "/planet/img/min/japan.jpg",
+      "lat": 34.6829008,
+      "lon": 135.8545975,
+      "description": "Todai-Ji Japan 2024 Acrylic on canvas 38x45,5cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/__trashed-2/"},
+        {"text": "Buy Art Print", "url": "/product/todai-ji-nara-park-japon-2024/"},
+        {"text": "See All", "url": "/product-tag/japan/"}
+      ]
+    },
+    {
+      "nation": "California USA",
+      "width": 1138,
+      "height": 1575,
+      "url": "/planet/img/california.jpg",
+      "min": "/planet/img/min/california.jpg",
+      "lat": 36.7014631,
+      "lon": -118.755997,
+      "description": "Golden Gate San Francisco California USA 2023 Acrylic on canvas 80x100cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/golden-gate-san-francisco-california-usa-2023/"},
+        {"text": "Buy Art Print", "url": "/product/golden-gate-san-francisco-california-usa-2023-2/"},
+        {"text": "See All", "url": "/product-tag/california/"}
+      ]
+    },
+    {
+      "nation": "Singapore",
+      "width": 1660,
+      "height": 3411,
+      "url": "/planet/img/singapore.jpg",
+      "min": "/planet/img/min/singapore.jpg",
+      "lat": 1.357107,
+      "lon": 103.8194992,
+      "description": "Super Trees Singapore 2024 Acrylic on canvas 60x120cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/supertrees-singapore-2024-2/"},
+        {"text": "Buy Art Print", "url": "/product/supertrees-singapore-2024/"},
+        {"text": "See All", "url": "/product-tag/singapore/"}
+      ]
+    },
+    {
+      "nation": "Fiji islands",
+      "width": 1815,
+      "height": 3637,
+      "url": "/planet/img/fiji.jpg",
+      "min": "/planet/img/min/fiji.jpg",
+      "lat": -18.1239696,
+      "lon": 179.0122737,
+      "description": "Yasawa Island Fiji 2024 Acrylic on canvas 51x101cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/fiji-nacula-yasawa-islands-2024-2/"},
+        {"text": "Buy Art Print", "url": "/product/fiji-nacula-yasawa-islands-2024/"},
+        {"text": "See All", "url": "/product-tag/fiji/"}
+      ]
+    },
+    {
+      "nation": "France",
+      "width": 2038,
+      "height": 2587,
+      "url": "/planet/img/france.jpg",
+      "min": "/planet/img/min/france.jpg",
+      "lat": 48.8588897,
+      "lon": 2.320041,
+      "description": "Tour Eiffel Paris France 2025 Acrylic on canvas 40x50cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/eiffel-tower-paris-2025-2/"},
+        {"text": "Buy Art Print", "url": "/product/eiffel-tower-paris-2025/"},
+        {"text": "See All", "url": "/product-tag/france/"}
+      ]
+    },
+    {
+      "nation": "England",
+      "width": 1305,
+      "height": 2228,
+      "url": "/planet/img/england.jpg",
+      "min": "/planet/img/min/england.jpg",
+      "lat": 51.4893335,
+      "lon": -0.1440551,
+      "description": "Big Ben London England 2023 Acrylic on canvas 45x60cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/bigben-london-2023/"},
+        {"text": "Buy Art Print", "url": "/product/big-ben-london-england-2023/"},
+        {"text": "See All", "url": "/product-tag/uk/"}
+      ]
+    },
+    {
+      "nation": "Indonesia",
+      "width": 2820,
+      "height": 1651,
+      "url": "/planet/img/indonesia.jpg",
+      "min": "/planet/img/min/indonesia.jpg",
+      "lat": -8.2271303,
+      "lon": 115.1919203,
+      "description": "Rice fields Bali Indonesia 2024 Acrylic on canvas 40x60cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/rice-fields-serie-bali-indonesia-i/"},
+        {"text": "Buy Art Print", "url": "/product/rice-fields-series-canggu-bali-indonesia-2024-3/"},
+        {"text": "See All", "url": "/product-tag/bali/"}
+      ]
+    },
+    {
+      "nation": "Spain",
+      "width": 1284,
+      "height": 1906,
+      "url": "/planet/img/spain.jpg",
+      "min": "/planet/img/min/spain.jpg",
+      "lat": 37.3886303,
+      "lon": -5.9953403,
+      "description": "Sevilla Calle Feria Spain 2024 Acrylic on canvas 61x91cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/spain-sevilla-calle-feria-2024-2/"},
+        {"text": "Buy Art Print", "url": "/product/spain-sevilla-calle-feria-2024/"},
+        {"text": "See All", "url": "/product-tag/spain/"}
+      ]
+    },
+    {
+      "nation": "Australia",
+      "width": 1099,
+      "height": 2215,
+      "url": "/planet/img/australia.jpg",
+      "min": "/planet/img/min/australia.jpg",
+      "lat": -33.8698439,
+      "lon": 151.2082848,
+      "description": "Sea Forth Australia 2024 Acrylic on canvas 40x70cm",
+      "actions": [
+        {"text": "Buy Original", "url": "/product/australia-sea-forth-2024-2/"},
+        {"text": "Buy Art Print", "url": "/product/australia-sea-forth-2024/"},
+        {"text": "See All", "url": "/product-tag/australia/"}
+      ]
+    }
+  ]
+}

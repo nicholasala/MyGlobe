@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "http-server ./dist",
     "clean": "rm -rf ./dist",
-    "build": "webpack && rm -f ./dist/index.html && rm -f ./dist/style.css && cp index.html ./dist/ && cp ./style/* ./dist/ && cp -r ./texture ./dist/",
-    "build-html": "rm -f ./dist/index.html && cp index.html ./dist/",
-    "build-css": "rm -f ./dist/style.css && cp ./style/* ./dist/",
-    "build-js": "webpack"
+    "build": "webpack",
+    "build-vientomosse": "npm run build-js-vientomosse && npm run build-html-vientomosse && npm run build-css-vientomosse && cp -r ./examples/vientomosse/assets ./dist/planet/",
+    "build-js-vientomosse": "webpack --entry ./examples/vientomosse/index.js",
+    "build-html-vientomosse": "rm -f ./dist/index.html && cp ./examples/vientomosse/index.html ./dist/",
+    "build-css-vientomosse": "rm -f ./dist/style.css && cp ./examples/vientomosse/style.css ./dist/"
   },
   "author": "",
   "license": "ISC",
