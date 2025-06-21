@@ -65,13 +65,6 @@ function getImageClickCallback(image) {
     return () => showImagePopup(image);
 }
 
-function disableCanvasSelection(containerId) {
-    const container = document.getElementById(containerId);
-
-    if(container.childElementCount > 0)
-        container.children[0].classList.add('not-selectable');
-}
-
 function showSupportWays() {
     const supportButton = document.getElementById('supportButton');
     const paypalButton = document.getElementById('paypalButton');
@@ -105,7 +98,6 @@ window.onload = () => {
             const images = config.images.map(image => new ImageDTO(image));
             planetKeeper.createPlanet(config.canvasContainerId, Number(config.sceneBackgroundColor), config.texture);
             planetKeeper.start();
-            disableCanvasSelection(config.canvasContainerId);
             prepareDomEvents();
 
             planetKeeper.addImagesOnPlanet(images, getImageClickCallback).then(() => {

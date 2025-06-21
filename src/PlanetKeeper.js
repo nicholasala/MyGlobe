@@ -81,6 +81,13 @@ export class PlanetKeeper {
         this.#pointLight.position.copy(this.#camera.position);
         this.#scene.add(this.#pointLight);
 
+        //Disable canvas selection style
+        this.#renderer.domElement.style.setProperty('-webkit-user-select', 'none');
+        this.#renderer.domElement.style.setProperty('-ms-user-select', 'none');
+        this.#renderer.domElement.style.setProperty('-webkit-tap-highlight-color', 'transparent');
+        this.#renderer.domElement.style.userSelect = 'none';
+        this.#renderer.domElement.style.touchAction = 'none';
+
         //Window resize event
         window.addEventListener('resize', () => this.#renderer.setSize(this.#canvasContainerElement.clientWidth, this.#canvasContainerElement.clientHeight));
     }

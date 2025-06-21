@@ -87,13 +87,6 @@ header {
     cursor: pointer;
 }
 
-.not-selectable {
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
 footer {
     height: 6rem;
     padding-top: 0.5rem;
