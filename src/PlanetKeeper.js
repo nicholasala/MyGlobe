@@ -228,8 +228,8 @@ export class PlanetKeeper {
     * Handle the pointer move event in the scene
     */
     #onScenePointerMove(event) {
-        if(Math.abs(this.#prevPointerMoveX - event.clientX) > POINTER_MOVE_OFFSET_TRIGGER ||
-            Math.abs(this.#prevPointerMoveY - event.clientY) > POINTER_MOVE_OFFSET_TRIGGER)
+        if(Math.abs(this.#prevPointerMoveX - event.clientX) >= POINTER_MOVE_OFFSET_TRIGGER ||
+            Math.abs(this.#prevPointerMoveY - event.clientY) >= POINTER_MOVE_OFFSET_TRIGGER)
             this.#clearImageClick();
     }
 
