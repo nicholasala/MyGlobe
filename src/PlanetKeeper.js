@@ -89,6 +89,9 @@ export class PlanetKeeper {
         this.#canvasContainerElement.addEventListener('pointerdown', (event) => this.#onScenePointerDown(event));
     }
 
+    /**
+     * Enable manual controls (zoom, rotation)
+     */
     enableControls() {
         this.#controls = new OrbitControls(this.#camera, this.#renderer.domElement);
         this.#controls.minDistance = MIN_CAMERA_DISTANCE;
@@ -96,7 +99,10 @@ export class PlanetKeeper {
         this.#controls.addEventListener('change', () => this.#onCameraChange());
     }
 
-    enableRotation() {
+    /**
+     * Enable initial auto rotation of the planet
+     */
+    enableAutoRotation() {
         if(this.#controls) this.#controls.autoRotate = true;
     }
 
@@ -199,7 +205,7 @@ export class PlanetKeeper {
     }
 
     /**
-    * Handle the pointer down event in the scene preparing the callback related to an image
+    * Handle the pointer down event in the scene preparing the callback related to an image if an image is clicked
     * @param {Event} event - pointer down event
     */
     #onScenePointerDown(event) {
@@ -225,7 +231,7 @@ export class PlanetKeeper {
     }
 
     /**
-    * Handle the pointer move event in the scene
+    * Handle the pointer move event in the scene clearing the callback related to an image click when the user is moving the planet
     */
     #onScenePointerMove(event) {
         if(Math.abs(this.#prevPointerMoveX - event.clientX) >= POINTER_MOVE_OFFSET_TRIGGER ||
@@ -242,7 +248,7 @@ export class PlanetKeeper {
     }
 
     /**
-    * Clear the click on the image callbacks
+    * Clear click on image callbacks
     */
     #clearImageClick() {
         this.#imageClickCallback = undefined;
