@@ -1,0 +1,51 @@
+{
+  "texture": "/venus_surface.jpg",
+  "canvasContainerId": "canvasContainerElementId",
+  "sceneBackgroundColor": "0x3B0472",
+  "images": [
+    {
+      "nation": "Unknown",
+      "width": 960,
+      "height": 720,
+      "url": "https://cdn.pixabay.com/photo/2021/01/08/17/56/river-5900547_960_720.jpg",
+      "min": "https://cdn.pixabay.com/photo/2021/01/08/17/56/river-5900547_960_720.jpg",
+      "lat": 47.634396,
+      "lon": -93.53365,
+      "description": "Optional description",
+      "actions": []
+    },
+    {
+      "nation": "Unknown",
+      "width": 960,
+      "height": 720,
+      "url": "https://cdn.pixabay.com/photo/2022/10/18/17/56/bird-7530845_960_720.jpg",
+      "min": "https://cdn.pixabay.com/photo/2022/10/18/17/56/bird-7530845_960_720.jpg",
+      "lat": -45.082218,
+      "lon": 168.731975,
+      "description": "Optional description",
+      "actions": []
+    },
+    {
+      "nation": "Unknown",
+      "width": 960,
+      "height": 720,
+      "url": "https://cdn.pixabay.com/photo/2023/08/13/14/42/mountain-8187621_960_720.jpg",
+      "min": "https://cdn.pixabay.com/photo/2023/08/13/14/42/mountain-8187621_960_720.jpg",
+      "lat": 32.119292,
+      "lon": 79.786663,
+      "description": "Optional description",
+      "actions": []
+    },
+    {
+      "nation": "Unknown",
+      "width": 514,
+      "height": 720,
+      "url": "https://cdn.pixabay.com/photo/2021/02/27/22/19/plant-6055943_960_720.jpg",
+      "min": "https://cdn.pixabay.com/photo/2021/02/27/22/19/plant-6055943_960_720.jpg",
+      "lat": 39.538602,
+      "lon": 140.255413,
+      "description": "Optional description",
+      "actions": [] 
+    }
+  ]
+}

@@ -2,7 +2,6 @@
   "texture": "/example/texture/url",
   "canvasContainerId": "canvasContainerElementId",
   "sceneBackgroundColor": "0x040223",
-  "primaryColor": "#040223",
   "images": [
     {
       "nation": "Norway",

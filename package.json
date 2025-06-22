@@ -6,6 +6,8 @@
     "dev": "http-server ./dist",
     "clean": "rm -rf ./dist",
     "build": "webpack",
+    "build-basic": "webpack --entry ./examples/basic/index.js && npm run build-html-basic && rm -f ./dist/my-globe-config.json && cp ./examples/basic/my-globe-config.json ./dist/ && cp ./examples/basic/venus_surface.jpg ./dist/",
+    "build-html-basic": "rm -f ./dist/index.html && cp ./examples/basic/index.html ./dist/",
     "build-vientomosse": "npm run build-js-vientomosse && npm run build-html-vientomosse && npm run build-css-vientomosse && cp -r ./examples/vientomosse/assets ./dist/planet/",
     "build-js-vientomosse": "webpack --entry ./examples/vientomosse/index.js",
     "build-html-vientomosse": "rm -f ./dist/index.html && cp ./examples/vientomosse/index.html ./dist/",

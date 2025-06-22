@@ -138,7 +138,7 @@ export class PlanetKeeper {
     /**
     * Add a list of images on the planet
     * @param {ImageDTO[]} images - image object
-    * @param {Function} getClickCallback - function that accepts an image and return the on click callback associated
+    * @param {Function} getClickCallback - function that accepts an ImageDTO and return the on click callback associated
     */
     async addImagesOnPlanet(images, getClickCallback) {
         for(const image of images) {
