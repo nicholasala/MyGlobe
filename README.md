@@ -10,7 +10,25 @@ So far, the software features achieved are:
   * Custom click callback: implement a custom callback function to handle click events on the images.
 
 ## Configuration
-The planet can be easily configured using a json file. Here [my-globe-config.json](https://github.com/nicholasala/MyGlobe/blob/main/my-globe-config.json) the structure of the json used.
+The planet can be easily configured using a json file and the class [PlanetKeeperBuilder](https://github.com/nicholasala/MyGlobe/blob/main/src/PlanetKeeperBuilder.js) in this way:
+
+```
+fetch('/my-globe-config.json')
+  .then(res => res.json())
+  .then(config => {
+    const builder = new PlanetKeeperBuilder(config, getImageClickCallback);
+
+    builder.build().then(planetKeeper => {
+      planetKeeper.enableControls();
+      planetKeeper.enableAutoRotation();
+      planetKeeper.enableClickOnImages();
+      planetKeeper.addStars(300, 50);
+      planetKeeper.start();
+    });
+});
+```
+
+Here [my-globe-config.json](https://github.com/nicholasala/MyGlobe/blob/main/my-globe-config.json) the structure of the json used.
 
 ## Development
 The project dependencies are managed using npm. [Http-server](https://www.npmjs.com/package/http-server) is needed as a global npm dependency. The commands for the development are:
@@ -23,15 +41,22 @@ The project dependencies are managed using npm. [Http-server](https://www.npmjs.
 ## Human written code
 The source code of the library is written without using auto-generated code from artificial intelligence
 
-## Demo
-As a use case MyGlobe is used to create a representation of the paintings created by [Viento Mosse](https://www.vientomosse.art) in her World Painting Project. The click on the images in this case, shows a popup with the information of the painting. Here some screenshots from the first release of this use case:
+## Example
+A basic example can be found in the [examples/basic](https://github.com/nicholasala/MyGlobe/tree/main/examples/basic) folder. Here a screenshot from this example:
 
 <p align="center">
-  <img src="https://github.com/nicholasala/MyGlobe/blob/main/use-case-img/use-case-example.png">
+  <img src="https://github.com/nicholasala/MyGlobe/blob/main/examples/basic/screenshot.png" width="70%">
+</p>
+
+## Use case
+As a use case MyGlobe is used to create a representation of the paintings created by [Viento Mosse](https://www.vientomosse.art) in her World Painting Project. The click on the images, in this case, shows a popup with the information of the painting. Here some screenshots from the first release of this use case:
+
+<p align="center">
+  <img src="https://github.com/nicholasala/MyGlobe/blob/main/use-case-img/use-case-example.png" width="70%">
 </p>
 
 <p align="center">
-  <img src="https://github.com/nicholasala/MyGlobe/blob/main/use-case-img/use-case-zoom.png">
+  <img src="https://github.com/nicholasala/MyGlobe/blob/main/use-case-img/use-case-zoom.png" width="70%">
 </p>
 
 <p align="center">
