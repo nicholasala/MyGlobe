@@ -108,7 +108,7 @@ window.onload = () => {
                 planetKeeper.enableClickOnImages();
                 planetKeeper.enableControls();
                 planetKeeper.enableAutoRotation();
-                setTimeout(hideLoader, 2000);
+                hideLoader();
             });
         });
 };

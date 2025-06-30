@@ -136,20 +136,15 @@ footer {
     opacity: 1;
 }
 
-.loader-gesture-info {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    display: flex;
-    line-height: 3rem;
-}
-
-.loader-gesture-icon {
-    height: 3rem;
-    width: 3rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+.map-loader {
+    width: var(--loader-size);
+    height: var(--loader-size);
+    border: 5px solid white;
+    border-bottom-color: transparent;
+    border-radius: 50%;
     display: inline-block;
-    color: white;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
 }
 
 .popup-container {
