@@ -73,20 +73,52 @@
             </div>
         </div>
     </div>
+    <div id="bannerPopupContainer" class="popup-container">
+        <div class="popup-mask"></div>
+        <div class="popup">
+            <div id="closeBannerPopupIcon" class="close-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </div>
+            <h1 class="popup-title" style="padding-top: 2rem;">Lofoten Art Installations&nbsp;&#11088;</h1>
+            <p>
+                The art installations in Lofoten, with many different locations, are here. Discover how to find it!
+            </p>
+            <div class="buttons-container">
+                <a id="paypalButton" class="popup-button-link" href="/lofoten-art-installations-locations">
+                    <div class="popup-button">See locations</div>
+                </a>
+            </div>
+        </div>
+    </div>
     <footer>
         <a class="popup-button-link" href="/product-category/originals/">
             <div id="openGalleryButton" class="open-gallery-button">Open Gallery</div>
         </a>
     </footer>
-    <script>
+    <script defer>
         //https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
         function saveVhVariable() {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
         }
 
+        function openBannerPopup() {
+            let bannerPopupContainer = document.getElementById('bannerPopupContainer');
+            bannerPopupContainer.style.display = 'flex';
+        }
+
+        function closeBannerPopup() {
+            let bannerPopupContainer = document.getElementById('bannerPopupContainer');
+            bannerPopupContainer.style.display = 'none';
+        }
+
         window.addEventListener('resize', saveVhVariable);
         saveVhVariable();
+        let closeBannerIcon = document.getElementById('closeBannerPopupIcon');
+        closeBannerIcon.addEventListener('click', closeBannerPopup);
+        openBannerPopup();
     </script>
     <script defer src="my-globe.js"></script>
 </body>
