@@ -39,7 +39,7 @@ The project dependencies are managed using npm. [Http-server](https://www.npmjs.
  * `npm run dev` start the development server on localhost:8080
 
 ## Human written code
-The source code of the library is written without using auto-generated code from artificial intelligence
+The source code of the library is written without using auto-generated code
 
 ## Example
 A basic example can be found in the [examples/basic](https://github.com/nicholasala/MyGlobe/tree/main/examples/basic) folder. Here a screenshot from this example:
